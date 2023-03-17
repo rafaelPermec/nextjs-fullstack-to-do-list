@@ -25,10 +25,10 @@ jobs:
         - name: Verificando o repositório do Github
           uses: actions/checkout@v2
 
-        - name: Instalando o node com a versão 14
+        - name: Instalando o node com a versão 16
           uses: actions/setup-node@v1
           with:
-            node-version: 14
+            node-version: 16
 
         - name: instalando as dependências de package.json
           run: npm install
