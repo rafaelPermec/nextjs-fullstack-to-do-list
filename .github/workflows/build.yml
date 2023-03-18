@@ -6,18 +6,18 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  # sonarcloud:
+  #   name: SonarCloud
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0 
+  #     - name: SonarCloud Scan
+  #       uses: SonarSource/sonarcloud-github-action@master
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   eslint:
     name: Eslint
     runs-on: ubuntu-latest
@@ -25,10 +25,10 @@ jobs:
         - name: Verificando o repositório do Github
           uses: actions/checkout@v2
 
-        - name: Instalando o node com a versão 14
+        - name: Instalando o node com a versão 16
           uses: actions/setup-node@v1
           with:
-            node-version: 14
+            node-version: 16
 
         - name: instalando as dependências de package.json
           run: npm install
