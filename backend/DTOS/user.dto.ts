@@ -8,3 +8,8 @@ export interface IUser extends IUserLogin {
   name: string;
   todos?: string[];
 }
+
+export interface IUserAuth extends IUser {
+  token: string;
+  auth: boolean;
+}
