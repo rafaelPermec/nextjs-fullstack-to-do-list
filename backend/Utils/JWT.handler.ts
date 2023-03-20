@@ -1,5 +1,6 @@
 import { JwtPayload, sign, SignOptions, verify } from 'jsonwebtoken';
-import HttpException from './HttpException';
+import { HttpException } from '../Utils';
+import { StatusCodes } from 'http-status-codes';
 import { IUser } from '../DTOS/user.dto';
 
 const JWT_SECRET = process.env.TOKEN_SECRET || 'squadDataScienceXP';
@@ -14,7 +15,7 @@ const generateJWTToken = (user: Omit<IUser, 'password'>) =>
 
 const authToken = async (token: string | undefined): Promise<string | JwtPayload> => {
   if (!token) {
-    throw new HttpException(401, 'Token must be a valid token');
+    throw new HttpException(StatusCodes.UNAUTHORIZED, 'Token must be a valid token');
   }
 
   try {

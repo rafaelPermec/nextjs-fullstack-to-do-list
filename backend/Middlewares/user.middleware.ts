@@ -1,22 +1,27 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from 'http-status-codes';
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { HttpException } from '../Utils';
 
-const fieldError = 'All fields must be filled';
+const passwordRegex = RegExp(`^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$`);
 
 const LoginSchema = Joi.object({
   email: Joi.string().email().required().messages({
-    'any.required': fieldError,
-    'string.empty': fieldError,
+    'any.required': 'Insira seu email',
+    'string.empty': 'Insira seu email',
+    'string.email': 'Insira um email válido',
   }),
-  password: Joi.string().min(6).required().messages({
-    'any.required': fieldError,
-    'string.empty': fieldError,
+  name: Joi.string().min(3).required().messages({
+    'any.required': 'Insira seu nome',
+    'string.empty': 'Insira seu nome',
+    'string.min': 'Seu nome deve conter pelo menos 3 caracteres',
+  }),
+  password: Joi.string().regex(passwordRegex).messages({
+    'string.pattern.base': 'As senhas devem conter pelo menos 8 caracteres, uma maiúscula, uma minúscula, um número e um caractere especial',
   }),
 });
 
-const LoginTypos = (req: Request, _res: Response, next: NextFunction) => {
+const LoginTypos = (req: NextApiRequest, _res: NextApiResponse, next: () => void) => {
   const { error } = LoginSchema.validate(req.body);
   if (error) throw new HttpException(StatusCodes.BAD_REQUEST, `${error.message}`);
 
