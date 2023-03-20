@@ -6,9 +6,9 @@ import { StatusCodes } from 'http-status-codes';
 import { generateJWTToken, HttpException } from '../Utils';
 
 export default class AuthModel {
-  private model = prisma.user;
+  readonly model = prisma.user;
 
-  public async login(login: IUserLogin): Promise<string> {
+  public async login(login: IUserLogin): Promise<{ token: string, auth: boolean }> {
     const errorMessage = 'Email ou Senha incorretos';
     if (!login.email || !login.password) {
       throw new HttpException(StatusCodes.BAD_REQUEST, 'Todos os campos devem ser preenchidos');
@@ -28,6 +28,6 @@ export default class AuthModel {
       name: clientData[0].name,
     });
 
-    return token;
+    return { token, auth: true };
   }
 }
