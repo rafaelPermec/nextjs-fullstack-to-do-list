@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { User } from '@prisma/client';
-import { IUser, IUserLogin } from '../DTOS/user.dto';
+import { IUserLogin } from '../DTOS/user.dto';
 import { StatusCodes } from 'http-status-codes';
 import { generateJWTToken, HttpException } from '../Utils';
 
