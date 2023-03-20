@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import Joi from 'joi';
 import { HttpException } from '../Utils';
 
-const passwordRegex = RegExp(`^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$`);
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/;
 
 const LoginSchema = Joi.object({
   email: Joi.string().email().required().messages({
