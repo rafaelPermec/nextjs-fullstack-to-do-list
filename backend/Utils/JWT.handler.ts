@@ -3,7 +3,7 @@ import { HttpException } from '../Utils';
 import { StatusCodes } from 'http-status-codes';
 import { IUser } from '../DTOS/user.dto';
 
-const JWT_SECRET = process.env.TOKEN_SECRET || 'squadDataScienceXP';
+const JWT_SECRET = process.env.TOKEN_SECRET || 'TodoList';
 
 const jwtConfig: SignOptions = {
   expiresIn: '1d',
@@ -22,7 +22,7 @@ const authToken = async (token: string | undefined): Promise<string | JwtPayload
     const validate = verify(token, JWT_SECRET);
     return validate;
   } catch (error) {
-    throw new HttpException(401, 'Token must be a valid token');
+    throw new HttpException(StatusCodes.UNAUTHORIZED, 'Token must be a valid token');
   }
 };
 
