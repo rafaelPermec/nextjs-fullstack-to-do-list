@@ -4,10 +4,9 @@ import seedSchema from './seed.schema';
 const prisma = new PrismaClient()
 
 async function user() {
-  const user = await prisma.user.createMany({
+  await prisma.user.createMany({
     data: seedSchema,
   });
-  console.log({ user });
 }
 
 user()
