@@ -6,7 +6,7 @@ import  { useRouter } from 'next/router';
 export default function TopMenu() {
   const { toggleColorMode } = useColorMode();
   const router = useRouter();
-  const redirect = () => router.push('https://rafaelpermec.github.io/');
+  const redirectToMyPortifolio = () => router.push('https://rafaelpermec.github.io/');
   return (
       <Menu
         closeOnSelect={false}
@@ -20,7 +20,7 @@ export default function TopMenu() {
           ml='3'
           boxShadow="dark-lg"
         />
-      <MenuList>
+      <MenuList shadow="dark-lg" >
         <MenuGroup title='Perfil'>
           <MenuItem icon={<PlusSquareIcon />} onClick={toggleColorMode} >
             Login
@@ -37,7 +37,7 @@ export default function TopMenu() {
           <MenuItem icon={<MoonIcon />} onClick={toggleColorMode} >
             Alterar cores
           </MenuItem>
-          <MenuItem icon={<InfoOutlineIcon />} onClick={redirect} >
+          <MenuItem icon={<InfoOutlineIcon />} onClick={redirectToMyPortifolio} >
             Sobre mim
           </MenuItem>
         </MenuGroup>
