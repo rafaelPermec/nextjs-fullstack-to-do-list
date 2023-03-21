@@ -7,7 +7,6 @@ async function user() {
   const user = await prisma.user.createMany({
     data: seedSchema,
   });
-  console.log({ user });
 }
 
 user()
