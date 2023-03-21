@@ -2,6 +2,7 @@ import { JwtPayload, sign, SignOptions, verify } from 'jsonwebtoken';
 import { HttpException } from '../Utils';
 import { StatusCodes } from 'http-status-codes';
 import { IUser } from '../DTOS/user.dto';
+import 'dotenv/config';
 
 const JWT_SECRET = process.env.TOKEN_SECRET || 'TodoList';
 
@@ -17,7 +18,6 @@ const authToken = async (token: string | undefined): Promise<string | JwtPayload
   if (!token) {
     throw new HttpException(StatusCodes.UNAUTHORIZED, 'Token must be a valid token');
   }
-
   try {
     const validate = verify(token, JWT_SECRET);
     return validate;
