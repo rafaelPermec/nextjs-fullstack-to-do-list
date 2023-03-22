@@ -1,7 +1,23 @@
 import React from 'react'
-import { Menu, MenuButton, MenuList, MenuDivider, MenuGroup, MenuItem, IconButton, useColorMode } from '@chakra-ui/react';
-import { HamburgerIcon, MoonIcon, BellIcon, InfoOutlineIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import  { useRouter } from 'next/router';
+import { 
+  Menu, 
+  MenuButton, 
+  MenuList, 
+  MenuDivider, 
+  MenuGroup, 
+  MenuItem, 
+  IconButton, 
+  useColorMode 
+} from '@chakra-ui/react';
+import { 
+  HamburgerIcon, 
+  MoonIcon, 
+  BellIcon, 
+  InfoOutlineIcon, 
+  EditIcon, 
+  PlusSquareIcon 
+} from '@chakra-ui/icons';
 
 export default function TopMenu() {
   const { toggleColorMode } = useColorMode();

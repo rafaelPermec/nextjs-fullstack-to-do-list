@@ -1,11 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Login, TopMenu } from '@/frontend/components'
-import { prisma } from '@/lib/prisma'
-import { User } from '@prisma/client'
-import { GetServerSideProps } from 'next';
-import { Text, Flex, Button, useColorModeValue } from '@chakra-ui/react';
-import { PlusSquareIcon, BellIcon } from '@chakra-ui/icons';
+import React from 'react';
 import { Megrim } from 'next/font/google';
+import { TopMenu, LoginModal, SigninModal } from '@/frontend/Components';
+import { 
+  Text, 
+  Flex, 
+  Button,
+} from '@chakra-ui/react';
+import { PlusSquareIcon, BellIcon } from '@chakra-ui/icons';
+import { GetContext } from '@/frontend/Context/Provider';
 
 const megrim = Megrim({
   weight: '400',
@@ -14,7 +17,19 @@ const megrim = Megrim({
 })
 
 export default function Page() {
-  const formBackground = useColorModeValue("gray.100", "gray.700");
+  const { formBackground, onOpen, loginFinalRef, signinFinalRef } = GetContext();
+  const [whichModal, setWhichModal] = React.useState('login' || 'signin');
+
+  const handleLogin = () => {
+    onOpen();
+    setWhichModal('login');
+  }
+
+  const handleSignin = () => {
+    onOpen();
+    setWhichModal('signin');
+  }
+
   return (
   <main>
     <TopMenu />
@@ -42,28 +57,26 @@ export default function Page() {
           variant="outline" 
           mb={22} 
           mt={22}
-          leftIcon={<BellIcon />} 
+          leftIcon={<BellIcon />}
+          ref={loginFinalRef}
+          onClick={handleSignin}
           >
             Cadastre-se
           </Button>
           <Button 
             colorScheme="teal"
             leftIcon={<PlusSquareIcon />}
+            ref={signinFinalRef}
+            onClick={handleLogin}
           >
             Login
           </Button>
+          {
+            whichModal === 'login' ? <LoginModal /> : <SigninModal />
+          }
       </Flex>
+      
     </Flex>
   </main>
     )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const user = await prisma.user.findFirst({ select: { name: true, email: true, password: true }, where: { id: 1 } })
-
-  return {
-    props: {
-      user
-    }
-  }
 }

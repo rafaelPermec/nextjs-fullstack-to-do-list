@@ -1,5 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
+import { useRouter } from 'next/router';
+import TopMenu from '@/frontend/Components/TopMenu';
+import DeletePopover from '@/frontend/Components/modals/DeletePopover';
 import { 
   HStack, 
   VStack, 
@@ -12,13 +15,8 @@ import {
   Popover,
   PopoverTrigger,
   Button,
-  Badge,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, SmallAddIcon } from '@chakra-ui/icons';
-import TopMenu from '@/frontend/components/TopMenu';
-import DeletePopover from '@/frontend/components/modals/DeletePopover';
-import { redirect } from 'next/dist/server/api-utils/index';
-import { useRouter } from 'next/router';
 
 export default function TodoList() {
   const router = useRouter();
