@@ -1,4 +1,6 @@
 import React from 'react';
+import { GetContext } from '@/frontend/Context/Provider';
+import { PasswordValidation } from '../';
 import { 
   Button, 
   Modal,
@@ -10,12 +12,30 @@ import {
   ModalCloseButton,
   FormControl, 
   FormLabel, 
-  Input 
+  Input,
 } from '@chakra-ui/react';
-import { GetContext } from '@/frontend/Context/Provider';
 
 export default function LoginModal() {
-    const { isOpen, onClose, loginFinalRef, loginInitialRef } = GetContext()
+    const { 
+      isOpen, 
+      onClose, 
+      loginFinalRef, 
+      loginInitialRef, 
+      handleInputChange,
+      setUser,
+      ListValidator,
+    } = GetContext();
+
+    const handlePassword = ({ target: { value } }: any) => {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+      const passwordTest = passwordRegex.test(value);
+      if (passwordTest) {
+        setUser((prevState: any) => ({ ...prevState, password: value }));
+      } else {
+        setUser((prevState: any) => ({ ...prevState, password: '' }));
+      }
+    };
+
   
     return (
         <Modal
@@ -28,16 +48,20 @@ export default function LoginModal() {
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Login</ModalHeader>
+            <ModalHeader margin='0 auto' fontSize='4xl'>
+              Login
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
               <FormControl>
                 <FormLabel>E-mail:</FormLabel>
                 <Input 
                   ref={loginInitialRef} 
-                  placeholder='E-mail' 
+                  placeholder='E-mail'
+                  name="email"
                   type="email" 
                   borderColor="gray.300"
+                  onChange={(e) => handleInputChange(e, setUser)}
                 />
               </FormControl>
   
@@ -45,10 +69,18 @@ export default function LoginModal() {
                 <FormLabel>Senha</FormLabel>
                 <Input 
                   placeholder='Senha' 
-                  type="password" 
+                  type="password"
+                  name="password"
                   borderColor="gray.300"
+                  maxLength={30}
+                  onChange={(e) => {
+                    ListValidator(e);
+                    handlePassword(e);
+                    handleInputChange(e, setUser);
+                  }}
                 />
               </FormControl>
+              <PasswordValidation />
             </ModalBody>
   
             <ModalFooter>

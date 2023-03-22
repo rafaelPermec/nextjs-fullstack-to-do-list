@@ -1,5 +1,5 @@
 import React from 'react'
-import  { useRouter } from 'next/router';
+import { GetContext } from '../Context/Provider';
 import { 
   Menu, 
   MenuButton, 
@@ -8,7 +8,6 @@ import {
   MenuGroup, 
   MenuItem, 
   IconButton, 
-  useColorMode 
 } from '@chakra-ui/react';
 import { 
   HamburgerIcon, 
@@ -20,8 +19,7 @@ import {
 } from '@chakra-ui/icons';
 
 export default function TopMenu() {
-  const { toggleColorMode } = useColorMode();
-  const router = useRouter();
+  const { toggleColorMode, router } = GetContext();
   const redirectToMyPortifolio = () => router.push('https://rafaelpermec.github.io/');
   return (
       <Menu

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import TopMenu from '@/frontend/Components/TopMenu';
+import { GetContext } from '@/frontend/Context/Provider';
+import { TopMenu } from '@/frontend/Components';
 import {
   Flex,
   Heading,
@@ -10,7 +10,7 @@ import {
 import { ArrowBackIcon } from '@chakra-ui/icons';
 
 export default function UpdateTodo() {
-  const router = useRouter()
+  const { router } = GetContext()
   return (
     <main>
     <TopMenu />

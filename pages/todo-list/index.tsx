@@ -1,8 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
-import { useRouter } from 'next/router';
-import TopMenu from '@/frontend/Components/TopMenu';
-import DeletePopover from '@/frontend/Components/modals/DeletePopover';
+import { DeletePopover, TopMenu } from '@/frontend/Components';
 import { 
   HStack, 
   VStack, 
@@ -17,9 +15,10 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, SmallAddIcon } from '@chakra-ui/icons';
+import { GetContext } from '@/frontend/Context/Provider';
 
 export default function TodoList() {
-  const router = useRouter();
+  const { router } = GetContext();
   const todos = [
     {
       id: 1,

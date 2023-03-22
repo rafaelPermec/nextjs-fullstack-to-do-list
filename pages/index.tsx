@@ -17,8 +17,14 @@ const megrim = Megrim({
 })
 
 export default function Page() {
-  const { formBackground, onOpen, loginFinalRef, signinFinalRef } = GetContext();
-  const [whichModal, setWhichModal] = React.useState('login' || 'signin');
+  const { 
+    formBackground, 
+    onOpen, 
+    loginFinalRef, 
+    signinFinalRef,
+    whichModal,
+    setWhichModal,
+  } = GetContext();
 
   const handleLogin = () => {
     onOpen();
