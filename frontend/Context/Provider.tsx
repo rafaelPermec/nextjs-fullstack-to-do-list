@@ -59,31 +59,19 @@ function Provider({ children }: ProviderProps) {
     const lowerCase = /(?=.*?[a-z])/;
     const number = /(?=.*?[0-9])/;
     const specialChar = /(?=.*?[#?!@$%^&*-])/;
-    if (upperCase.test(value)) {
-      setRestrictionList((prevState: any) => ({ ...prevState, upperCase: true }));
-    } if (!upperCase.test(value)) {
-      setRestrictionList((prevState: any) => ({ ...prevState, upperCase: false }));
-    } if (lowerCase.test(value)) {
-      setRestrictionList((prevState: any) => ({ ...prevState, lowerCase: true }));
-    } if (!lowerCase.test(value)) {
-     setRestrictionList((prevState: any) => ({ ...prevState, lowerCase: false }));
-    } if (number.test(value)) {
-      setRestrictionList((prevState: any) => ({ ...prevState, number: true }));
-    } if (!number.test(value)) { 
-      setRestrictionList((prevState: any) => ({ ...prevState, number: false }));
-    } if (specialChar.test(value)) {
-      setRestrictionList((prevState: any) => ({ ...prevState, specialChar: true }));
-    } if (!specialChar.test(value)) {
-      setRestrictionList((prevState: any) => ({ ...prevState, specialChar: false }));
-    } if (value && value.length >= 8) {
-      setRestrictionList((prevState: any) => ({ ...prevState, minLength: true }));
-    } if (!value || value.length < 8) {
-      setRestrictionList((prevState: any) => ({ ...prevState, minLength: false }));
-    } if (value && value.length < 30) {
-      setRestrictionList((prevState: any) => ({ ...prevState, maxLength: true }));
-    } if (!value || value.length > 30) {
-      setRestrictionList((prevState: any) => ({ ...prevState, maxLength: false }));
-    }
+    
+    if (upperCase.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, upperCase: true }));
+    if (!upperCase.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, upperCase: false }));
+    if (lowerCase.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, lowerCase: true }));
+    if (!lowerCase.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, lowerCase: false }));
+    if (number.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, number: true }));
+    if (!number.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, number: false }));
+    if (specialChar.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, specialChar: true }));
+    if (!specialChar.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, specialChar: false }));
+    if (value && value.length >= 8) setRestrictionList((prevState: any) => ({ ...prevState, minLength: true }));
+    if (!value || value.length < 8) setRestrictionList((prevState: any) => ({ ...prevState, minLength: false }));
+    if (value && value.length < 30) setRestrictionList((prevState: any) => ({ ...prevState, maxLength: true }));
+    if (!value || value.length > 30) setRestrictionList((prevState: any) => ({ ...prevState, maxLength: false }));
   };
 
   const context = useMemo(() => (
