@@ -55,25 +55,21 @@ function Provider({ children }: ProviderProps) {
   };
   
   const ListValidator = ({ target: { value } }: any) => {
-    const upperCase = /(?=.*?[A-Z])/;
-    const lowerCase = /(?=.*?[a-z])/;
-    const number = /(?=.*?[0-9])/;
-    const specialChar = /(?=.*?[#?!@$%^&*-])/;
-    if (upperCase.test(value)) {
+    if (/(?=.*?[A-Z])/.test(value)) {
       setRestrictionList((prevState: any) => ({ ...prevState, upperCase: true }));
-    } if (!upperCase.test(value)) {
+    } if (!/(?=.*?[A-Z])/.test(value)) {
       setRestrictionList((prevState: any) => ({ ...prevState, upperCase: false }));
-    } if (lowerCase.test(value)) {
+    } if (/(?=.*?[a-z])/.test(value)) {
       setRestrictionList((prevState: any) => ({ ...prevState, lowerCase: true }));
-    } if (!lowerCase.test(value)) {
+    } if (!/(?=.*?[a-z])/.test(value)) {
      setRestrictionList((prevState: any) => ({ ...prevState, lowerCase: false }));
-    } if (number.test(value)) {
+    } if (/(?=.*?[0-9])/.test(value)) {
       setRestrictionList((prevState: any) => ({ ...prevState, number: true }));
-    } if (!number.test(value)) { 
+    } if (!/(?=.*?[0-9])/.test(value)) { 
       setRestrictionList((prevState: any) => ({ ...prevState, number: false }));
-    } if (specialChar.test(value)) {
+    } if (/(?=.*?[#?!@$%^&*-])/.test(value)) {
       setRestrictionList((prevState: any) => ({ ...prevState, specialChar: true }));
-    } if (!specialChar.test(value)) {
+    } if (!/(?=.*?[#?!@$%^&*-])/.test(value)) {
       setRestrictionList((prevState: any) => ({ ...prevState, specialChar: false }));
     } if (value && value.length >= 8) {
       setRestrictionList((prevState: any) => ({ ...prevState, minLength: true }));
