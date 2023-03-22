@@ -10,10 +10,12 @@ import {
   ModalCloseButton, 
   FormControl, 
   FormLabel, 
-  Input 
+  Input, 
+  useToast
 } from '@chakra-ui/react';
 import { GetContext } from '@/frontend/Context/Provider';
 import PasswordValidation from '../PasswordValidation';
+import { patchUserFetch } from '@/frontend/Services/user.fetch';
 
 export default function UpdateModal() {
   const { 
@@ -24,8 +26,45 @@ export default function UpdateModal() {
     handleInputChange,
     handlePassword,
     setUser,
+    user,
     ListValidator,
   } = GetContext();
+
+  const toast = useToast()
+
+  const handleUpdateUser = async (e: any) => {
+    e.preventDefault();
+
+    try {
+      const dataRequest = await patchUserFetch(user.id, user);
+      if (dataRequest.status === 200) {
+      onClose();
+      toast({
+        title: 'Sucesso!',
+        description: 'Conta devidamente modificada!',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+      } else {
+        toast({
+          title: 'Algo aconteceu!',
+          description: 'Por favor, ente novamente.',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: 'Erro ao criar usuário.',
+        description: error.response.data.message,
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  }
 
   return (
     <section>
@@ -44,7 +83,7 @@ export default function UpdateModal() {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl>
+            <FormControl id="update_user">
               <FormLabel>Seu nome:</FormLabel>
               <Input 
                 ref={updateInitialRef}
@@ -55,7 +94,7 @@ export default function UpdateModal() {
               />
             </FormControl>
 
-            <FormControl mt={4}>
+            <FormControl mt={4} id="update_user">
                 <FormLabel>E-mail:</FormLabel>
                 <Input 
                   placeholder='Email' 
@@ -66,7 +105,7 @@ export default function UpdateModal() {
                 />
               </FormControl>
 
-            <FormControl mt={4}>
+            <FormControl mt={4} id="update_user">
                 <FormLabel>Senha:</FormLabel>
                 <Input 
                   placeholder='Senha' 
@@ -85,9 +124,11 @@ export default function UpdateModal() {
             </ModalBody>
 
             <ModalFooter>
-            <Button colorScheme='teal' mr={3}>
+            <FormControl id="update_user">
+            <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => handleUpdateUser(e)}>
               Editar Dados
             </Button>
+            </FormControl>
             <Button 
               onClick={onClose} 
               colorScheme='teal' 

@@ -1,5 +1,7 @@
 import React from 'react';
 import { GetContext } from '@/frontend/Context/Provider';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
 import { TopMenu } from '@/frontend/Components';
 import {
   Flex,
@@ -31,4 +33,20 @@ export default function UpdateTodo() {
     </Flex>
   </main>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { 'auth': auth } = parseCookies(ctx);
+  
+  if (!auth) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 }

@@ -1,21 +1,26 @@
 import axios from "axios";
 import { LoginDTO } from "../DTOS/login.dto";
-
-const { ACTUAL_URL } = process.env;
+import { parseCookies } from "nookies";
 
 const loginFetch = async (data: LoginDTO) => {
   const user = await axios({
     method: "POST",
-    url: `${ACTUAL_URL}/login`,
+    url: `http://localhost:3000/api/v1/login`,
     data,
   })
+
   return user;
 }
 
 const authFetch = async (data: LoginDTO) => {
+  const { 'auth': auth } = parseCookies();
+  const authHeader = JSON.parse(auth).token;
   const user = await axios({
     method: "GET",
-    url: `${ACTUAL_URL}/login`,
+    url: `http://localhost:3000/api/v1/login`,
+    headers: {
+      'Authorization': authHeader.token,
+    },
     data,
   })
   return user;

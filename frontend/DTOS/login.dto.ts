@@ -3,9 +3,7 @@ export interface LoginDTO {
   password: string;
 }
 
-export interface RegisterDTO {
-  email: string;
-  password: string;
+export interface RegisterDTO extends LoginDTO {
   name: string;
 }
 
@@ -15,4 +13,18 @@ export interface UserDTO {
   name: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface AuthDTO {
+  id: number;
+  name: string;
+  email: string;
+  token: string;
+  auth: boolean;
+}
+
+export interface AuthContextDTO {
+  isAuthenticated: boolean;
+  user: AuthDTO | undefined;
+  serverSideLogin: (user: LoginDTO) => void;
 }

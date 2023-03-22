@@ -1,5 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from 'nookies';
+import { GetContext } from '@/frontend/Context/Provider';
 import { DeletePopover, TopMenu } from '@/frontend/Components';
 import { 
   HStack, 
@@ -15,7 +18,6 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, SmallAddIcon } from '@chakra-ui/icons';
-import { GetContext } from '@/frontend/Context/Provider';
 
 export default function TodoList() {
   const { router } = GetContext();
@@ -119,4 +121,20 @@ export default function TodoList() {
       </VStack>
     </main>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { 'auth': auth } = parseCookies(ctx);
+  
+  if (!auth) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 }

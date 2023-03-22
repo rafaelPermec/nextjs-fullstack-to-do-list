@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   Button, 
   Modal,
@@ -10,10 +10,12 @@ import {
   ModalCloseButton, 
   FormControl, 
   FormLabel, 
-  Input 
+  Input, 
+  useToast
 } from '@chakra-ui/react';
 import { GetContext } from '@/frontend/Context/Provider';
 import PasswordValidation from '../PasswordValidation';
+import { createUserFetch } from '@/frontend/Services/user.fetch';
 
 export default function SigninModal() {
   const { 
@@ -24,80 +26,133 @@ export default function SigninModal() {
     handleInputChange,
     handlePassword,
     setUser,
+    user,
     ListValidator,
   } = GetContext();
+  const toast = useToast(); 
+
+  const handleCreateUser = async (e: any) => {
+    e.preventDefault();
+
+    try {
+      const dataRequest = await createUserFetch(user);
+      if (dataRequest.status === 201) {
+      onClose();
+      toast({
+        title: 'Bem vindo!',
+        description: 'Usuário criado com sucesso!',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+      } else {
+        toast({
+          title: 'Algo aconteceu!',
+          description: 'Por favor, ente novamente.',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: 'Erro ao criar usuário.',
+        description: error.response.data.message,
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  }
   
     return (
       <section>
-        <Modal
-          initialFocusRef={signinInitialRef}
-          finalFocusRef={signinFinalRef}
-          isOpen={isOpen}
-          onClose={onClose}
-          size='2xl'
-          isCentered
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader margin='0 auto' fontSize='4xl'>
-              Crie sua conta
-            </ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>Seu nome:</FormLabel>
-                <Input 
-                  ref={signinInitialRef}
-                  placeholder='Nome'
-                  name="name"
-                  borderColor="gray.300"
-                  onChange={(e) => handleInputChange(e, setUser)} 
-                />
-              </FormControl>
-  
-              <FormControl mt={4}>
-                  <FormLabel>E-mail:</FormLabel>
-                  <Input 
-                    placeholder='Email' 
-                    type='email'
-                    name="email"
+          <Modal
+            initialFocusRef={signinInitialRef}
+            finalFocusRef={signinFinalRef}
+            isOpen={isOpen}
+            onClose={onClose}
+            size='2xl'
+            isCentered
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader margin='0 auto' fontSize='4xl'>
+                Crie sua conta
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody pb={6}>
+                
+                <FormControl id="create_new_user">
+                  <FormLabel htmlFor='name' >Seu nome:</FormLabel>
+                  <Input
+                    id='name'
+                    ref={signinInitialRef}
+                    placeholder='Nome'
+                    name="name"
                     borderColor="gray.300"
-                    onChange={(e) => handleInputChange(e, setUser)}
+                    onChange={(e) => handleInputChange(e, setUser)} 
                   />
                 </FormControl>
+    
+                <FormControl mt={4} id="create_new_user">
+                    <FormLabel htmlFor='email' >E-mail:</FormLabel>
+                    <Input 
+                      id='email'
+                      placeholder='Email' 
+                      type='email'
+                      name="email"
+                      borderColor="gray.300"
+                      onChange={(e) => handleInputChange(e, setUser)}
+                    />
+                  </FormControl>
 
-              <FormControl mt={4}>
-                  <FormLabel>Senha:</FormLabel>
-                  <Input 
-                    placeholder='Senha' 
-                    type='password'
-                    name="password" 
-                    maxLength={30}
-                    borderColor="gray.300"
-                    onChange={(e) => {
-                      ListValidator(e);
-                      handlePassword(e);
-                      handleInputChange(e, setUser);
-                    }}
-                  />
+                <FormControl mt={4} id="create_new_user">
+                    <FormLabel htmlFor='password'>Senha:</FormLabel>
+                    <Input 
+                      id='password'
+                      placeholder='Senha' 
+                      type='password'
+                      name="password" 
+                      maxLength={30}
+                      borderColor="gray.300"
+                      onChange={(e) => {
+                        ListValidator(e);
+                        handlePassword(e);
+                        handleInputChange(e, setUser);
+                      }}
+                    />
+                  </FormControl>
+                  <PasswordValidation />
+                </ModalBody>
+    
+                <ModalFooter>
+                  <FormControl id="create_new_user">
+                  <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => handleCreateUser(e)}>
+                    Bem-Vindo!
+                  </Button>
                 </FormControl>
-                <PasswordValidation />
-              </ModalBody>
-  
-              <ModalFooter>
-              <Button colorScheme='teal' mr={3}>
-                Bem-Vindo!
-              </Button>
-              <Button 
-                onClick={onClose} 
-                colorScheme='teal' 
-                variant='outline'
-              >
-                Voltar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+                <Button 
+                  onClick={onClose} 
+                  colorScheme='teal' 
+                  variant='outline'
+                >
+                  Voltar
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
       </section>
     )
 }
+
+// export async function getServerSideProps(context:any) {
+//   const res = await fetch('http://localhost:3000/api/user');
+//   const data = await res.json();
+
+//   return {
+//     props: {
+//       data,
+//     },
+//   };
+// }

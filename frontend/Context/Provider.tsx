@@ -10,11 +10,8 @@ type ProviderProps = {
 
 function Provider({ children }: ProviderProps) {
   const [whichModal, setWhichModal] = useState('login' || 'signin' || 'update');
-  const [user, setUser] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+  const [user, setUser] = useState({});
+  const [login, setLogin] = useState({});
   const [restrictionList, setRestrictionList] = useState({
     upperCase: false,
     lowerCase: false,
@@ -23,6 +20,7 @@ function Provider({ children }: ProviderProps) {
     minLength: false,
     maxLength: false,
   });
+  const [isAuthCookies, setIsAuthCookies] = useState(false);
 
   const formBackground = useColorModeValue("gray.100", "gray.700");
   const { toggleColorMode } = useColorMode();
@@ -39,7 +37,7 @@ function Provider({ children }: ProviderProps) {
  
 
   useEffect(() => {
-    // Inicialização do Contexto
+
   }, []);
 
   const handleInputChange = ({ target: { name, value } }: any, functionSetter: (param: any) => void) => functionSetter((prevState: any) => ({ ...prevState, [name]: value }));
@@ -59,7 +57,7 @@ function Provider({ children }: ProviderProps) {
     const lowerCase = /(?=.*?[a-z])/;
     const number = /(?=.*?[0-9])/;
     const specialChar = /(?=.*?[#?!@$%^&*-])/;
-    
+
     if (upperCase.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, upperCase: true }));
     if (!upperCase.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, upperCase: false }));
     if (lowerCase.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, lowerCase: true }));
@@ -78,7 +76,6 @@ function Provider({ children }: ProviderProps) {
     {
       // Estados:
       formBackground, 
-      toggleColorMode,
       isOpen,
       router,
       loginInitialRef, 
@@ -87,16 +84,21 @@ function Provider({ children }: ProviderProps) {
       signinFinalRef,
       updateInitialRef,
       updateFinalRef,
-      onOpen, 
-      onClose, 
       whichModal,
       user,
+      login,
+      isAuthCookies,
       restrictionList,
+      toggleColorMode,
+      onOpen, 
+      onClose, 
       // Funções Operacionais:
       setWhichModal,
       handleInputChange,
       handlePassword,
       setUser,
+      setLogin,
+      setIsAuthCookies,
       setRestrictionList,
       ListValidator,
     }
@@ -111,6 +113,8 @@ function Provider({ children }: ProviderProps) {
       onClose,
       whichModal,
       user,
+      login,
+      isAuthCookies,
       restrictionList,
     ]
   );

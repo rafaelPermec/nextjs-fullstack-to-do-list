@@ -1,21 +1,31 @@
 import axios from "axios";
 import { TodoDTO } from "../DTOS/todo.dto";
+import { parseCookies } from "nookies";
 
-const { ACTUAL_URL } = process.env;
 
 const todoFetch = async (id: number, data: TodoDTO) => {
+  const { 'auth': auth } = parseCookies();
+  const authHeader = JSON.parse(auth).token;
   const todo = await axios({
     method: "GET",
-    url: `${ACTUAL_URL}/todo-list/${id}`,
+    url: `http://localhost:3000/api/v1/todo-list/${id}`,
+    headers: {
+      'Authorization': authHeader,
+    },
     data,
   })
   return todo;
 }
 
 const patchTodoFetch = async (data: TodoDTO) => {
+  const { 'auth': auth } = parseCookies();
+  const authHeader = JSON.parse(auth).token;
   const todo = await axios({
     method: "PATCH",
-    url: `${ACTUAL_URL}/todo-list`,
+    url: `http://localhost:3000/api/v1/todo-list`,
+    headers: {
+      'Authorization': authHeader,
+    },
     data,
   })
   return todo;

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { GetContext } from '@/frontend/Context/Provider';
+import { loginFetch, authFetch } from '@/frontend/Services';
 import { PasswordValidation } from '../';
 import { 
   Button, 
@@ -13,7 +14,9 @@ import {
   FormControl, 
   FormLabel, 
   Input,
+  useToast,
 } from '@chakra-ui/react';
+import { AuthContext } from '@/frontend/Context/AuthContext';
 
 export default function LoginModal() {
     const { 
@@ -23,9 +26,47 @@ export default function LoginModal() {
       loginInitialRef, 
       handleInputChange,
       handlePassword,
-      setUser,
+      setLogin,
+      login,
       ListValidator,
     } = GetContext();
+    const { serverSideLogin } = useContext(AuthContext);
+
+    const toast = useToast();
+
+    const handleLogin = async (e: any) => {
+      e.preventDefault();
+  
+      try {
+        const loginRequest: any = await serverSideLogin(login)
+        if (loginRequest.auth) {
+          onClose();
+          toast({
+            title: `Olá, ${loginRequest.name}`,
+            description: 'Seja bem-vindo!',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            title: 'Erro no Login',
+            description: 'Usuário não autorizado.',
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+          });
+        }
+      } catch (error: any) {
+        toast({
+          title: 'Erro no Login',
+          description: error.response.data.message,
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    }
 
     return (
         <Modal
@@ -43,7 +84,7 @@ export default function LoginModal() {
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
-              <FormControl>
+              <FormControl id="login_user">
                 <FormLabel>E-mail:</FormLabel>
                 <Input 
                   ref={loginInitialRef} 
@@ -51,11 +92,11 @@ export default function LoginModal() {
                   name="email"
                   type="email" 
                   borderColor="gray.300"
-                  onChange={(e) => handleInputChange(e, setUser)}
+                  onChange={(e) => handleInputChange(e, setLogin)}
                 />
               </FormControl>
   
-              <FormControl mt={4}>
+              <FormControl mt={4} id="login_user">
                 <FormLabel>Senha</FormLabel>
                 <Input 
                   placeholder='Senha' 
@@ -66,7 +107,7 @@ export default function LoginModal() {
                   onChange={(e) => {
                     ListValidator(e);
                     handlePassword(e);
-                    handleInputChange(e, setUser);
+                    handleInputChange(e, setLogin);
                   }}
                 />
               </FormControl>
@@ -74,9 +115,11 @@ export default function LoginModal() {
             </ModalBody>
   
             <ModalFooter>
-              <Button colorScheme='teal' mr={3}>
+            <FormControl id="login_user">
+              <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => handleLogin(e)}>
                 Bem-Vindo!
               </Button>
+            </FormControl>
               <Button 
                 onClick={onClose} 
                 colorScheme='teal' 

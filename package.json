@@ -32,7 +32,9 @@
     "joi": "^17.9.0",
     "jsonwebtoken": "^9.0.0",
     "next": "13.2.4",
+    "next-auth": "^4.20.1",
     "next-connect": "^0.13.0",
+    "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

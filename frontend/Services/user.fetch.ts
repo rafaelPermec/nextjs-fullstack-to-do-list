@@ -1,39 +1,50 @@
 import axios from "axios"
-import { LoginDTO } from "../DTOS/login.dto"
+import { LoginDTO } from "../DTOS/login.dto";
+import { parseCookies } from "nookies";
 
-const { ACTUAL_URL } = process.env;
 
 const createUserFetch = async (data: LoginDTO) => {
-  const createdUser = await axios({
-    method: "POST",
-    url: `${ACTUAL_URL}/users`,
-    data,
-  })
+  const createdUser = await axios.post(`http://localhost:3000/api/v1/users`, data);
   return createdUser;
 }
 
 const getUserFetch = (id: number, data: LoginDTO) => {
+  const { 'auth': auth } = parseCookies();
+  const authHeader = JSON.parse(auth).token;
   const user = axios({
     method: "GET",
-    url: `${ACTUAL_URL}/users/${id}`,
+    url: `http://localhost:3000/api/v1/users/${id}`,
+    headers: {
+      'Authorization': authHeader,
+    },
     data,
   })
   return user;
 }
 
 const patchUserFetch = (id: number, data: LoginDTO) => {
+  const { 'auth': auth } = parseCookies();
+  const authHeader = JSON.parse(auth).token;
   const user = axios({
     method: "PATCH",
-    url: `${ACTUAL_URL}/users/${id}`,
+    url: `http://localhost:3000/api/v1/users/${id}`,
+    headers: {
+      'Authorization': authHeader,
+    },
     data,
   })
   return user;
 }
 
 const deleteUser = (id: number, data: LoginDTO) => {
+  const { 'auth': auth } = parseCookies();
+  const authHeader = JSON.parse(auth).token;
   const user = axios({
     method: "DELETE",
-    url: `${ACTUAL_URL}/users/${id}`,
+    url: `http://localhost:3000/api/v1/users/${id}`,
+    headers: {
+      'Authorization': authHeader,
+    },
     data,
   })
   return user;
