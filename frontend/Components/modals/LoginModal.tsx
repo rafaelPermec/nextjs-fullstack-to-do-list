@@ -39,7 +39,13 @@ export default function LoginModal() {
   
       try {
         const loginRequest: any = await serverSideLogin(login)
+        console.log(loginRequest)
         if (loginRequest.auth) {
+          localStorage.setItem('user', JSON.stringify({ 
+            id: loginRequest.id, 
+            name: loginRequest.name, 
+            email : loginRequest.email,
+          }));
           onClose();
           toast({
             title: `Olá, ${loginRequest.name}`,
