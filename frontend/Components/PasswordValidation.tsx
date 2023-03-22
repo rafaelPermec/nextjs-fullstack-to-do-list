@@ -17,9 +17,7 @@ export default function PasswordValidation() {
       </ListItem>
       <ListItem 
       color={
-        restrictionList.minLength ?
-        'green.500' :
-        ''
+        restrictionList.minLength && 'green.500'
       }
       >
         <ListIcon 
@@ -38,9 +36,7 @@ export default function PasswordValidation() {
       </ListItem>
       <ListItem 
       color={
-        restrictionList.lowerCase ?
-        'green.500' :
-        ''
+        restrictionList.minLength && 'green.500'
       }
       >
         <ListIcon 
@@ -59,9 +55,7 @@ export default function PasswordValidation() {
       </ListItem>
       <ListItem 
       color={
-        restrictionList.upperCase ?
-        'green.500' :
-        ''
+        restrictionList.minLength && 'green.500'
       }
       >
         <ListIcon 
@@ -80,9 +74,7 @@ export default function PasswordValidation() {
       </ListItem>
       <ListItem 
       color={
-        restrictionList.number ?
-        'green.500' :
-        ''
+        restrictionList.minLength && 'green.500'
       }
       >
         <ListIcon 
@@ -101,9 +93,7 @@ export default function PasswordValidation() {
       </ListItem>
       <ListItem 
       color={
-        restrictionList.specialChar ?
-        'green.500' :
-        ''
+        restrictionList.minLength && 'green.500'
       }
       >
         <ListIcon 
@@ -122,9 +112,7 @@ export default function PasswordValidation() {
       </ListItem>
       <ListItem 
       color={
-        restrictionList.maxLength ?
-        'green.500' :
-        ''
+        restrictionList.minLength && 'green.500'
       }
       >
         <ListIcon 

@@ -19,8 +19,8 @@ export default function UpdateModal() {
   const { 
     isOpen, 
     onClose, 
-    signinFinalRef, 
-    signinInitialRef, 
+    updateFinalRef,
+    updateInitialRef,
     handleInputChange,
     handlePassword,
     setUser,
@@ -30,8 +30,8 @@ export default function UpdateModal() {
   return (
     <section>
       <Modal
-          initialFocusRef={signinInitialRef}
-          finalFocusRef={signinFinalRef}
+          initialFocusRef={updateInitialRef}
+          finalFocusRef={updateFinalRef}
           isOpen={isOpen}
           onClose={onClose}
           size='2xl'
@@ -47,7 +47,7 @@ export default function UpdateModal() {
             <FormControl>
               <FormLabel>Seu nome:</FormLabel>
               <Input 
-                ref={signinInitialRef}
+                ref={updateInitialRef}
                 placeholder='Nome'
                 name="name"
                 borderColor="gray.300"

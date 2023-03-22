@@ -8,6 +8,6 @@ const handler = nc({ onError: ErrorMiddleware });
 
 handler
   .use(authenticateMiddleware)
-  .post(todoController.update);
+  .patch(todoController.update);
 
 export default handler;
