@@ -7,7 +7,7 @@ import {
   MenuDivider, 
   MenuGroup, 
   MenuItem, 
-  IconButton, 
+  IconButton,
 } from '@chakra-ui/react';
 import { 
   HamburgerIcon, 
@@ -19,8 +19,31 @@ import {
 } from '@chakra-ui/icons';
 
 export default function TopMenu() {
-  const { toggleColorMode, router } = GetContext();
+  const { 
+    toggleColorMode, 
+    router,
+    updateFinalRef,
+    onOpen,
+    setWhichModal,
+  } = GetContext();
+
+
+
   const redirectToMyPortifolio = () => router.push('https://rafaelpermec.github.io/');
+  const openLoginModal = () => {
+    onOpen();
+    setWhichModal('login');
+  };
+  const openSigninModal = () => {
+    onOpen();
+    setWhichModal('signin');
+  };
+
+  const openUpdateModal = () => {
+    onOpen();
+    setWhichModal('update');
+  };
+
   return (
       <Menu
         closeOnSelect={false}
@@ -36,13 +59,23 @@ export default function TopMenu() {
         />
       <MenuList shadow="dark-lg" >
         <MenuGroup title='Perfil'>
-          <MenuItem icon={<PlusSquareIcon />} onClick={toggleColorMode} >
+          <MenuItem 
+            icon={<PlusSquareIcon />} 
+            onClick={openLoginModal}  
+          >
             Login
           </MenuItem>
-          <MenuItem icon={<BellIcon />} onClick={toggleColorMode} >
+          <MenuItem 
+            icon={<BellIcon />} 
+            onClick={openSigninModal} 
+          >
             Cadastre-se
           </MenuItem>
-          <MenuItem icon={<EditIcon />} onClick={toggleColorMode} >
+          <MenuItem 
+            icon={<EditIcon />}             
+            ref={updateFinalRef}
+            onClick={openUpdateModal} 
+          >
             Alterar perfil
           </MenuItem>
         </MenuGroup>

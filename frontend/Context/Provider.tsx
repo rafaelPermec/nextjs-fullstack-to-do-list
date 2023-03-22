@@ -1,5 +1,5 @@
 import React, { useContext, useState, createContext, useMemo, useEffect, useRef } from 'react';
-import { useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import { useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 export const Context = createContext({});
@@ -25,6 +25,7 @@ function Provider({ children }: ProviderProps) {
   });
 
   const formBackground = useColorModeValue("gray.100", "gray.700");
+  const { toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const router = useRouter();
@@ -42,6 +43,16 @@ function Provider({ children }: ProviderProps) {
   }, []);
 
   const handleInputChange = ({ target: { name, value } }: any, functionSetter: (param: any) => void) => functionSetter((prevState: any) => ({ ...prevState, [name]: value }));
+
+  const handlePassword = ({ target: { value } }: any) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const passwordTest = passwordRegex.test(value);
+    if (passwordTest) {
+      setUser((prevState: any) => ({ ...prevState, password: value }));
+    } else {
+      setUser((prevState: any) => ({ ...prevState, password: '' }));
+    }
+  };
   
   const ListValidator = ({ target: { value } }: any) => {
     const upperCase = /(?=.*?[A-Z])/;
@@ -79,6 +90,7 @@ function Provider({ children }: ProviderProps) {
     {
       // Estados:
       formBackground, 
+      toggleColorMode,
       isOpen,
       router,
       loginInitialRef, 
@@ -92,9 +104,10 @@ function Provider({ children }: ProviderProps) {
       whichModal,
       user,
       restrictionList,
-        // Funções Operacionais:
+      // Funções Operacionais:
       setWhichModal,
       handleInputChange,
+      handlePassword,
       setUser,
       setRestrictionList,
       ListValidator,
@@ -102,7 +115,8 @@ function Provider({ children }: ProviderProps) {
   ), 
     [
       // Observer
-      formBackground, 
+      formBackground,
+      toggleColorMode,
       isOpen, 
       router,
       onOpen, 

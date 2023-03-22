@@ -22,22 +22,10 @@ export default function SigninModal() {
     signinFinalRef, 
     signinInitialRef, 
     handleInputChange,
+    handlePassword,
     setUser,
-    user,
     ListValidator,
   } = GetContext();
-  
-  console.log(user)
-
-  const handlePassword = ({ target: { value } }: any) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    const passwordTest = passwordRegex.test(value);
-    if (passwordTest) {
-      setUser((prevState: any) => ({ ...prevState, password: value }));
-    } else {
-      setUser((prevState: any) => ({ ...prevState, password: '' }));
-    }
-  };
   
     return (
       <section>
@@ -84,6 +72,7 @@ export default function SigninModal() {
                     placeholder='Senha' 
                     type='password'
                     name="password" 
+                    maxLength={30}
                     borderColor="gray.300"
                     onChange={(e) => {
                       ListValidator(e);

@@ -22,21 +22,11 @@ export default function LoginModal() {
       loginFinalRef, 
       loginInitialRef, 
       handleInputChange,
+      handlePassword,
       setUser,
       ListValidator,
     } = GetContext();
 
-    const handlePassword = ({ target: { value } }: any) => {
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-      const passwordTest = passwordRegex.test(value);
-      if (passwordTest) {
-        setUser((prevState: any) => ({ ...prevState, password: value }));
-      } else {
-        setUser((prevState: any) => ({ ...prevState, password: '' }));
-      }
-    };
-
-  
     return (
         <Modal
           initialFocusRef={loginInitialRef}

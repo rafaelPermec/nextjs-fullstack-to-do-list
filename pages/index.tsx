@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
 import { Megrim } from 'next/font/google';
-import { TopMenu, LoginModal, SigninModal } from '@/frontend/Components';
+import { TopMenu, LoginModal, SigninModal, UpdateModal } from '@/frontend/Components';
 import { 
   Text, 
   Flex, 
@@ -78,7 +78,7 @@ export default function Page() {
             Login
           </Button>
           {
-            whichModal === 'login' ? <LoginModal /> : <SigninModal />
+            whichModal === 'login' ? <LoginModal /> : ( whichModal === 'signin' ? <SigninModal /> : <UpdateModal /> )
           }
       </Flex>
       
