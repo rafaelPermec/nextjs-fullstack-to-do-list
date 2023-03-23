@@ -38,8 +38,7 @@ export default function LoginModal() {
       e.preventDefault();
   
       try {
-        const loginRequest: any = await serverSideLogin(login)
-        console.log(loginRequest)
+        const loginRequest: any = await serverSideLogin(login);
         if (loginRequest.auth) {
           localStorage.setItem('user', JSON.stringify({ 
             id: loginRequest.id, 
@@ -90,7 +89,7 @@ export default function LoginModal() {
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
-              <FormControl id="login_user">
+              <FormControl id="user_login">
                 <FormLabel>E-mail:</FormLabel>
                 <Input 
                   ref={loginInitialRef} 
@@ -102,7 +101,7 @@ export default function LoginModal() {
                 />
               </FormControl>
   
-              <FormControl mt={4} id="login_user">
+              <FormControl mt={4} id="user_login">
                 <FormLabel>Senha</FormLabel>
                 <Input 
                   placeholder='Senha' 
@@ -121,7 +120,7 @@ export default function LoginModal() {
             </ModalBody>
   
             <ModalFooter>
-            <FormControl id="login_user">
+            <FormControl id="user_login">
               <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => handleLogin(e)}>
                 Bem-Vindo!
               </Button>

@@ -1,4 +1,6 @@
 export interface TodoDTO {
-  todos: string[];
-}
-
+  id: number;
+  text: string;
+  completed: boolean,
+  owner: string;
+};

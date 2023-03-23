@@ -2,7 +2,7 @@ import React from 'react';
 import { GetContext } from '@/frontend/Context/Provider';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
-import { TopMenu } from '@/frontend/Components';
+import { TopMenu, UpdateModal } from '@/frontend/Components';
 import {
   Flex,
   Heading,
@@ -29,6 +29,7 @@ export default function UpdateTodo() {
             >
               Voltar
             </Button>
+          <UpdateModal/>
       </Flex>
     </Flex>
   </main>

@@ -8,6 +8,7 @@ const handler = nc({ onError: ErrorMiddleware });
 
 handler
   .use(authenticateMiddleware)
-  .get(todoController.getById);
+  .get(todoController.getById)
+  .patch(todoController.update);
 
 export default handler;

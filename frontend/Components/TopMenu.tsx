@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GetContext } from '../Context/Provider';
+import { parseCookies, destroyCookie } from 'nookies';
 import { 
   Menu, 
   MenuButton, 
@@ -15,8 +16,10 @@ import {
   BellIcon, 
   InfoOutlineIcon, 
   EditIcon, 
-  PlusSquareIcon 
+  PlusSquareIcon,
+  SmallCloseIcon,
 } from '@chakra-ui/icons';
+import { GetServerSideProps } from 'next';
 
 export default function TopMenu() {
   const { 
@@ -25,9 +28,18 @@ export default function TopMenu() {
     updateFinalRef,
     onOpen,
     setWhichModal,
+    isAuthCookies,
+    setIsAuthCookies,
   } = GetContext();
 
-
+  useEffect(() => {
+    const { 'auth': auth } = parseCookies();
+    if (auth) {
+      setIsAuthCookies(true);
+    } else {
+      setIsAuthCookies(false);
+    }
+  }, [setIsAuthCookies, isAuthCookies]);
 
   const redirectToMyPortifolio = () => router.push('https://rafaelpermec.github.io/');
   const openLoginModal = () => {
@@ -44,6 +56,12 @@ export default function TopMenu() {
     setWhichModal('update');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    destroyCookie(null, 'auth', { path: '/' })
+    router.push('/');
+  }
+
   return (
       <Menu
         closeOnSelect={false}
@@ -58,26 +76,41 @@ export default function TopMenu() {
           boxShadow="dark-lg"
         />
       <MenuList shadow="dark-lg" >
-        <MenuGroup title='Perfil'>
-          <MenuItem 
-            icon={<PlusSquareIcon />} 
-            onClick={openLoginModal}  
-          >
-            Login
-          </MenuItem>
-          <MenuItem 
-            icon={<BellIcon />} 
-            onClick={openSigninModal} 
-          >
-            Cadastre-se
-          </MenuItem>
-          <MenuItem 
-            icon={<EditIcon />}             
-            ref={updateFinalRef}
-            onClick={openUpdateModal} 
-          >
-            Alterar perfil
-          </MenuItem>
+      <MenuGroup title='Perfil'>
+          {
+            !isAuthCookies ? (
+              <>
+              <MenuItem 
+                icon={<PlusSquareIcon />} 
+                onClick={openLoginModal}  
+              >
+                Login
+              </MenuItem>
+              <MenuItem 
+                icon={<BellIcon />} 
+                onClick={openSigninModal} 
+              >
+                Cadastre-se
+              </MenuItem>
+              </> 
+            ) : (
+              <>
+                <MenuItem 
+                  icon={<EditIcon />}             
+                  ref={updateFinalRef}
+                  onClick={openUpdateModal} 
+                >
+                  Alterar perfil
+                </MenuItem>
+                <MenuItem 
+                  icon={<SmallCloseIcon />}
+                  onClick={handleLogout} 
+                >
+                  Logout
+                </MenuItem>
+            </>
+            )
+          }
         </MenuGroup>
         <MenuDivider  />
         <MenuGroup title='Features'>

@@ -1,6 +1,7 @@
 import React, { useContext, useState, createContext, useMemo, useEffect, useRef } from 'react';
 import { useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { parseCookies } from 'nookies';
 
 export const Context = createContext({});
 
@@ -21,10 +22,12 @@ function Provider({ children }: ProviderProps) {
     maxLength: false,
   });
   const [isAuthCookies, setIsAuthCookies] = useState(false);
+  const [todoList, setTodoList] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   const formBackground = useColorModeValue("gray.100", "gray.700");
   const { toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
 
@@ -75,6 +78,7 @@ function Provider({ children }: ProviderProps) {
   const context = useMemo(() => (
     {
       // Estados:
+      isLoading,
       formBackground, 
       isOpen,
       router,
@@ -89,10 +93,12 @@ function Provider({ children }: ProviderProps) {
       login,
       isAuthCookies,
       restrictionList,
+      todoList,
       toggleColorMode,
       onOpen, 
       onClose, 
       // Funções Operacionais:
+      setLoading,
       setWhichModal,
       handleInputChange,
       handlePassword,
@@ -101,10 +107,12 @@ function Provider({ children }: ProviderProps) {
       setIsAuthCookies,
       setRestrictionList,
       ListValidator,
+      setTodoList,
     }
   ), 
     [
       // Observer
+      isLoading,
       formBackground,
       toggleColorMode,
       isOpen, 
@@ -116,6 +124,7 @@ function Provider({ children }: ProviderProps) {
       login,
       isAuthCookies,
       restrictionList,
+      todoList,
     ]
   );
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { destroyCookie } from 'nookies';
 import { 
   Button, 
   Modal,
@@ -19,6 +20,7 @@ import { patchUserFetch } from '@/frontend/Services/user.fetch';
 
 export default function UpdateModal() {
   const { 
+    router,
     isOpen, 
     onClose, 
     updateFinalRef,
@@ -36,16 +38,20 @@ export default function UpdateModal() {
     e.preventDefault();
 
     try {
-      const dataRequest = await patchUserFetch(user.id, user);
+      const { id } = JSON.parse((localStorage.getItem('user')) as string);
+      const dataRequest = await patchUserFetch(id, user);
       if (dataRequest.status === 200) {
-      onClose();
-      toast({
-        title: 'Sucesso!',
-        description: 'Conta devidamente modificada!',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-      });
+        onClose();
+        toast({
+          title: 'Sucesso!',
+          description: 'Conta devidamente modificada! Por favor, faça seu login novamente.',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
+        localStorage.removeItem('user');
+        destroyCookie(null, 'auth');
+        router.push('/');
       } else {
         toast({
           title: 'Algo aconteceu!',
@@ -58,7 +64,7 @@ export default function UpdateModal() {
     } catch (error: any) {
       toast({
         title: 'Erro ao criar usuário.',
-        description: error.response.data.message,
+        description: ('Por favor, entre novamente.' || error.response.data.message),
         status: 'error',
         duration: 2000,
         isClosable: true,

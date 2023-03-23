@@ -1,9 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 import { GetContext } from '@/frontend/Context/Provider';
-import { DeletePopover, TopMenu } from '@/frontend/Components';
+import { todoFetch } from '@/frontend/Services/todo.fetch';
+import { DeletePopover, TopMenu, UpdateModal } from '@/frontend/Components';
 import { 
   HStack, 
   VStack, 
@@ -20,21 +21,25 @@ import {
 import { DeleteIcon, EditIcon, SmallAddIcon } from '@chakra-ui/icons';
 
 export default function TodoList() {
-  const { router } = GetContext();
-  const todos = [
-    {
-      id: 1,
-      body: 'Fazer café',
-    },
-    {
-      id: 2,
-      body: 'Estudar Next.js',
-    },
-    {
-      id: 3,
-      body: 'Estudar Chakra UI',
-    },
-  ];
+  const { router, setLoading, isLoading, setTodoList, todoList } = GetContext();
+
+  const getUser = localStorage.getItem('user');
+  if (!getUser) {
+    router.push('/');
+  }
+  const parseUser = JSON.parse(getUser as string);
+
+  useEffect((): any => {
+    const fetchTodo = async () => {
+      
+        setLoading(true);
+        const { data: { todos } } = await todoFetch(parseUser.id);
+        setTodoList(todos);;
+        setLoading(false);
+        
+      }
+      fetchTodo();
+  }, [setLoading, setTodoList, isLoading, parseUser.id]);
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -47,10 +52,6 @@ export default function TodoList() {
       element.style.color = '';
     } 
   };
-
-  const redirectToAddTodo = () => router.push('/todo-list/add');
-
-  const redirectToUpdateTodo = () => router.push('/todo-list/update');
 
   return (
     <main>
@@ -76,48 +77,52 @@ export default function TodoList() {
           alignItems='stretch'
         >
           {
-          todos.map((todo, index) => (
-            <HStack key={index}>
-              <Checkbox 
-                size='lg' 
-                colorScheme='teal' 
-                borderColor='gray.500'
-                name={`item-${index + 1}`}
-                defaultChecked={false}
-                onChange={(e) => handleCheck(e)}
-              />
-              <Text id={`item-${index + 1}`}>{todo.body}</Text>
-              <Spacer />
-              <IconButton
-                aria-label='Editar item de seu Todo'
-                backgroundColor='teal.400'
-                icon={<EditIcon />}
-                isRound={true}
-                onClick={redirectToUpdateTodo}
-              />
-              <Popover>
-                  <PopoverTrigger>
-                    <IconButton
-                      aria-label='Deletar item de seu Todo'
-                      backgroundColor='red.300'
-                      icon={<DeleteIcon />}
-                      isRound={true}
-                    />
-                  </PopoverTrigger>
-                <DeletePopover />
-              </Popover>
-            </HStack>
-          ))
+            !isLoading ? (
+            todoList.map((todo: any, index: any) => (
+              <HStack key={index}>
+                <Checkbox 
+                  size='lg' 
+                  colorScheme='teal' 
+                  borderColor='gray.500'
+                  name={`item-${index + 1}`}
+                  defaultChecked={false}
+                  onChange={(e) => handleCheck(e)}
+                />
+                <Text id={`item-${index + 1}`}>{todo}</Text>
+                <Spacer />
+                <IconButton
+                  aria-label='Editar item de seu Todo'
+                  backgroundColor='teal.400'
+                  icon={<EditIcon />}
+                  isRound={true}
+                  onClick={() => router.push('/todo-list/update')}
+                />
+                <Popover>
+                    <PopoverTrigger>
+                      <IconButton
+                        aria-label='Deletar item de seu Todo'
+                        backgroundColor='red.300'
+                        icon={<DeleteIcon />}
+                        isRound={true}
+                      />
+                    </PopoverTrigger>
+                  <DeletePopover />
+                </Popover>
+              </HStack>
+            ))) : (
+              <h1>Loading...</h1>
+            )
           }
         </VStack>
         <Button
           aria-label='Adicionar um novo item a sua lista de To-Do'
           colorScheme="teal"
           leftIcon={<SmallAddIcon />}
-          onClick={redirectToAddTodo}
+          onClick={() => router.push('/todo-list/add')}
         >
           Adicionar To-Do
         </Button>
+        <UpdateModal />
       </VStack>
     </main>
   )

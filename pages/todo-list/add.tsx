@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetContext } from '@/frontend/Context/Provider';
-import { TopMenu } from '@/frontend/Components';
+import { TopMenu, UpdateModal } from '@/frontend/Components';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
 import {
@@ -30,6 +30,7 @@ export default function AddTodo() {
             >
               Voltar
             </Button>
+            <UpdateModal />
         </Flex>
       </Flex>
     </main>

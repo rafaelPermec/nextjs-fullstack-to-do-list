@@ -8,8 +8,24 @@ import {
   Button 
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
+import { GetContext } from '@/frontend/Context/Provider';
 
 export default function DeletePopover() {
+
+  const { todoList, setTodoList } = GetContext();
+
+  // const handleTodoDelete = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  //   e.preventDefault();
+  //   try {
+  //     await todoDelete(todoId);
+  //     const newTodoList = todoList.filter((todo) => todo.id !== todoId);
+  //     setTodoList(newTodoList);
+  //     setTodoId('');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   return (
     <PopoverContent boxShadow="dark-lg" >
       <PopoverArrow />
@@ -20,6 +36,7 @@ export default function DeletePopover() {
           margin="2"
           colorScheme="red"
           leftIcon={<DeleteIcon />}
+          // onClick={(e) => handleTodoDelete(e)}
         >
           Excluir
         </Button>

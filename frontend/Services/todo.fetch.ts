@@ -3,7 +3,7 @@ import { TodoDTO } from "../DTOS/todo.dto";
 import { parseCookies } from "nookies";
 
 
-const todoFetch = async (id: number, data: TodoDTO) => {
+const todoFetch = async (id: number) => {
   const { 'auth': auth } = parseCookies();
   const authHeader = JSON.parse(auth).token;
   const todo = await axios({
@@ -12,17 +12,16 @@ const todoFetch = async (id: number, data: TodoDTO) => {
     headers: {
       'Authorization': authHeader,
     },
-    data,
   })
   return todo;
 }
 
-const patchTodoFetch = async (data: TodoDTO) => {
+const patchTodoFetch = async (id: number, data: TodoDTO) => {
   const { 'auth': auth } = parseCookies();
   const authHeader = JSON.parse(auth).token;
   const todo = await axios({
     method: "PATCH",
-    url: `http://localhost:3000/api/v1/todo-list`,
+    url: `http://localhost:3000/api/v1/todo-list/${id}`,
     headers: {
       'Authorization': authHeader,
     },
