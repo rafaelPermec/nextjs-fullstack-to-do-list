@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { 
   Button, 
   Modal,
@@ -35,16 +35,16 @@ export default function SigninModal() {
     e.preventDefault();
 
     try {
-      const dataRequest = await createUserFetch(user);
-      if (dataRequest.status === 201) {
-      onClose();
-      toast({
-        title: 'Bem vindo!',
-        description: 'Usuário criado com sucesso!',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-      });
+      const { data } = await createUserFetch({ name: user.name, email: user.email, password: user.password });
+      if (data) {
+        onClose();
+        toast({
+          title: 'Bem vindo!',
+          description: 'Agora faça seu login!',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
       } else {
         toast({
           title: 'Algo aconteceu!',
@@ -128,7 +128,7 @@ export default function SigninModal() {
     
                 <ModalFooter>
                   <FormControl id="create_new_user">
-                  <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => handleCreateUser(e)}>
+                  <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => {handleCreateUser(e); setUser({})}}>
                     Bem-Vindo!
                   </Button>
                 </FormControl>
@@ -145,14 +145,3 @@ export default function SigninModal() {
       </section>
     )
 }
-
-// export async function getServerSideProps(context:any) {
-//   const res = await fetch('http://localhost:3000/api/user');
-//   const data = await res.json();
-
-//   return {
-//     props: {
-//       data,
-//     },
-//   };
-// }

@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import todoFactory from '@/frontend/Utils/todo.factory';
+import { TodoPropsDTO } from '@/frontend/DTOS/todo.dto';
 import { parseCookies, setCookie } from 'nookies';
 import { GetContext } from '@/frontend/Context/Provider';
 import { patchTodoFetch, todoFetch } from '@/frontend/Services/todo.fetch';
@@ -22,22 +23,25 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, SmallAddIcon, CheckIcon, AttachmentIcon } from '@chakra-ui/icons';
 
+
 export default function TodoList() {
   const { router, setLoading, isLoading, setTodoList, todoList } = GetContext();
 
   const toast = useToast();
 
   useEffect((): any => {
-    const { 'auth': auth } = parseCookies();
-    const getUser = JSON.parse(auth)
+    const { 'user': user } = parseCookies();
+    const getUser = JSON.parse(user);
+    console.log(getUser);
     const fetchTodo = async () => {
         setLoading(true);
         const { data } = await todoFetch(getUser.id);
-        setTodoList(todoFactory(data.todos, getUser.name));
+        setTodoList(data.tasks);
         setLoading(false);
       }
       fetchTodo();
     }, [setLoading, setTodoList, isLoading]);
+
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -58,7 +62,6 @@ export default function TodoList() {
       } return todo;
     });
     setTodoList(checkedItens);
-    console.log(todoList)
   };
 
   const clearCompletedTodos = () => {
@@ -71,7 +74,6 @@ export default function TodoList() {
     const user = JSON.parse(localStorage.getItem('user') as string);
     try {
       const saveFormat = todoList.map((todo: any) => todo.text)
-      console.log(saveFormat);
       await patchTodoFetch(user.id, saveFormat)
       toast({
         title: 'Sucesso!',
@@ -81,7 +83,6 @@ export default function TodoList() {
         isClosable: true,
       });
     } catch (error) {
-      console.log(error)
       toast({
         title: 'Algo aconteceu!',
         description: 'Tente novamente mais tarde!',
@@ -116,7 +117,6 @@ export default function TodoList() {
           alignItems='stretch'
         >
           {
-            !isLoading ? (
             todoList.map((todo: any) => (
               <HStack key={todo.id}>
                 <Checkbox 
@@ -149,9 +149,7 @@ export default function TodoList() {
                   <DeletePopover taskId={todo.id} />
                 </Popover>
               </HStack>
-            ))) : (
-              <h1>Loading...</h1>
-            )
+            ))
           }
         </VStack>
         <HStack>
@@ -189,10 +187,8 @@ export default function TodoList() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-
-  // const 
-  
   const { 'auth': auth } = parseCookies(ctx);
+
   if (!auth) {
     return {
       redirect: {
@@ -202,6 +198,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
   return {
-    props: {},
+    props: { },
   };
 }

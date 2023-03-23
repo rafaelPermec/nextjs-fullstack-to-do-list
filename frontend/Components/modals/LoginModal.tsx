@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { GetContext } from '@/frontend/Context/Provider';
-import { loginFetch, authFetch } from '@/frontend/Services';
 import { PasswordValidation } from '../';
 import { 
   Button, 
@@ -17,6 +16,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { AuthContext } from '@/frontend/Context/AuthContext';
+import { parseCookies } from 'nookies';
 
 export default function LoginModal() {
     const { 
@@ -36,23 +36,15 @@ export default function LoginModal() {
 
     const handleLogin = async (e: any) => {
       e.preventDefault();
-  
+      
       try {
-        const loginRequest: any = await serverSideLogin(user);
-        if (loginRequest.auth) {
-          localStorage.setItem('user', JSON.stringify({ 
-            id: loginRequest.id, 
-            name: loginRequest.name, 
-            email : loginRequest.email,
-          }));
-          setUser({
-            id: loginRequest.id, 
-            name: loginRequest.name, 
-            email : loginRequest.email,
-          });
+        await serverSideLogin({ email: user.email, password: user.password });
+        const { 'auth': authSSR, 'user': userSSR } = parseCookies();
+        const userSSRParse = JSON.parse(userSSR);
+        if (authSSR) {
           onClose();
           toast({
-            title: `Olá, ${loginRequest.name}`,
+            title: `Olá, ${userSSRParse.name}`,
             description: 'Seja bem-vindo!',
             status: 'success',
             duration: 2000,
@@ -126,7 +118,7 @@ export default function LoginModal() {
   
             <ModalFooter>
             <FormControl id="user_login">
-              <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => handleLogin(e)}>
+              <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => {handleLogin(e); setUser({});}}>
                 Bem-Vindo!
               </Button>
             </FormControl>

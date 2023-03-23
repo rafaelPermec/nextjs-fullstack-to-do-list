@@ -13,20 +13,29 @@ export function AuthProvider({ children }: any) {
 
   const serverSideLogin = async (user: LoginDTO) => {
     const { data } = await loginFetch(user);
-    setCookie(undefined, 'auth', JSON.stringify(data), {
+    setCookie(undefined, 'auth', data.token, {
+      maxAge: 60 * 60 * 1, // 1 hour
+    });
+    setCookie(undefined, 'user', JSON.stringify({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      auth: data.auth,
+    }), {
       maxAge: 60 * 60 * 1, // 1 hour
     });
     setIsAuth(data);
 
     router.push('/todo-list');
-    return data;
   }
 
   useEffect(() => {
-    const { 'auth': auth } = parseCookies();
-    if (auth) {
-      setIsAuth(JSON.parse(auth));
-    }
+    const { 'auth': authSSR, 'user': userSSR } = parseCookies();
+    const userSSRParse = JSON.parse(userSSR);
+    const allCredentials = { ...userSSRParse,token: authSSR };
+    if (authSSR) {
+      setIsAuth(allCredentials && undefined);
+    } 
   }, []);
 
   return (

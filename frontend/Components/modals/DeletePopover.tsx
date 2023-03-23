@@ -7,6 +7,7 @@ import {
   PopoverHeader, 
   PopoverBody, 
   Button,
+  useToast,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 
@@ -17,15 +18,28 @@ interface DeletePopoverProps {
 export default function DeletePopover(props: DeletePopoverProps) {
 
   const { todoList, setTodoList } = GetContext();
+  const toast = useToast();
 
   const handleTodoDelete = () => {
-    // e.preventDefault();
     try {
       const deleteTodo = todoList.filter((todo: any) => todo.id !== props.taskId);
       setTodoList(deleteTodo);
       localStorage.setItem('todoList', JSON.stringify(deleteTodo));
+      toast({
+        title: 'Tarefa deletada com sucesso!',
+        description: 'Para gravar sua lista, pressione o botão "Salvar Lista".',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
     } catch (error) {
-      console.log(error);
+      toast({
+        title: 'Erro ao deletar tarefa',
+        description: 'Tente novamente mais tarde.',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
     }
   };
 

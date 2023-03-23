@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client'
-import seedSchema from './seed.schema';
+import seedUserSchema from './seed.user.schema';
 
 const prisma = new PrismaClient()
 
 async function user() {
   await prisma.user.createMany({
-    data: seedSchema,
+    data: seedUserSchema,
   });
 }
 

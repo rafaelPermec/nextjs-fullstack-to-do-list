@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { GetContext } from '../Context/Provider';
-import { parseCookies, destroyCookie } from 'nookies';
+import { destroyCookie } from 'nookies';
+import { AuthContext } from '../Context/AuthContext';
 import { 
   Menu, 
   MenuButton, 
@@ -19,7 +20,6 @@ import {
   PlusSquareIcon,
   SmallCloseIcon,
 } from '@chakra-ui/icons';
-import { GetServerSideProps } from 'next';
 
 export default function TopMenu() {
   const { 
@@ -28,18 +28,10 @@ export default function TopMenu() {
     updateFinalRef,
     onOpen,
     setWhichModal,
-    isAuthCookies,
-    setIsAuthCookies,
   } = GetContext();
 
-  useEffect(() => {
-    const { 'auth': auth } = parseCookies();
-    if (auth) {
-      setIsAuthCookies(true);
-    } else {
-      setIsAuthCookies(false);
-    }
-  }, [setIsAuthCookies, isAuthCookies]);
+  const { isAuthenticated } = useContext(AuthContext);
+
 
   const redirectToMyPortifolio = () => router.push('https://rafaelpermec.github.io/');
   const openLoginModal = () => {
@@ -78,7 +70,7 @@ export default function TopMenu() {
       <MenuList shadow="dark-lg" >
       <MenuGroup title='Perfil'>
           {
-            !isAuthCookies ? (
+            !isAuthenticated ? (
               <>
               <MenuItem 
                 icon={<PlusSquareIcon />} 

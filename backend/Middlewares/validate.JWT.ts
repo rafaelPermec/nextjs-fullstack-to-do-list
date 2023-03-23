@@ -14,9 +14,7 @@ const authenticateMiddleware = async (
   if (!user) {
     throw new HttpException(StatusCodes.UNAUTHORIZED, 'Token must be a valid token');
   }
-  res.setHeader('locals', JSON.stringify({...user, token: authorization}));
-
-  
+ 
   next();
 };
 

@@ -36,6 +36,8 @@ export default function UpdateModal() {
 
   const handleUpdateUser = async (e: any) => {
     e.preventDefault();
+    setUser({});
+    localStorage.removeItem('user');
 
     try {
       const { id } = JSON.parse((localStorage.getItem('user')) as string);

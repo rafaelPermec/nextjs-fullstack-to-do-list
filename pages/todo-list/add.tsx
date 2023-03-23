@@ -10,18 +10,43 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import todoFactory from '@/frontend/Utils/todo.factory';
+import { parse } from 'path';
 
 
 export default function AddTodo() {
-  const { router } = GetContext();
+  const { router, handleInputChange, todoUpdate, setTodoUpdate, todoList, setTodoList } = GetContext();
+
+  const handleAddTodo = async () => {
+    // const { 'auth': auth } = parseCookies();
+    // const getUser = JSON.parse(auth);
+    // const newTodo = todoList.push(todoFactory(todoUpdate, getUser.name));
+    // setTodoList(newTodo);
+    // setTodoUpdate('');
+    
+    router.push('/todo-list');
+  };
+
   return (
     <main>
       <TopMenu />
       <Flex height="80vh" alignItems="center" justifyContent="center" >
         <Flex direction="column" p={12} rounded={6} boxShadow="dark-lg">
           <Heading mb={6}>Adicione uma Tarefa</Heading>
-            <Textarea mb={8} placeholder='Ex: Ir ao dentista' required/>
-            <Button colorScheme="teal" mb={6} type="submit">Adicionar</Button>
+            <Textarea 
+              mb={8} 
+              placeholder='Ex: Ir ao dentista' 
+              onChange={(e) => handleInputChange(e, setTodoUpdate)} 
+              required
+            />
+            <Button 
+              colorScheme="teal" 
+              mb={6} 
+              type="submit"
+              onClick={handleAddTodo}
+            >
+              Adicionar
+            </Button>
             <Button
               leftIcon={<ArrowBackIcon />}
               colorScheme="facebook" 

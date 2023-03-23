@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import StatusCodes from 'http-status-codes';
 import { TodoView } from '../Views';
-import { TodoDTO } from '../DTOS/todo.dto';
 
 export default class TodoController {
   private view: TodoView;
@@ -18,11 +17,8 @@ export default class TodoController {
 
   public update = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
-    const todoList = req.body as TodoDTO[];
-    console.log(todoList);
-    console.log(typeof todoList)
+    const todoList = req.body;
     const todos = await this.view.update(Number(id), todoList);
-    res.status(StatusCodes.OK).json({ todos: todos.todos, updatedAt: todos.updatedAt });
+    res.status(StatusCodes.OK).json({ tasks: todos.tasks, updatedAt: todos.updatedAt });
   }
-
 }

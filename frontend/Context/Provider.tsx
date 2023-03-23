@@ -1,6 +1,7 @@
 import React, { useContext, useState, createContext, useMemo, useEffect, useRef } from 'react';
 import { useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+// import { parseCookies } from 'nookies';
 
 export const Context = createContext({});
 
@@ -11,16 +12,12 @@ type ProviderProps = {
 function Provider({ children }: ProviderProps) {
   // Event Hooks
   const [user, setUser] = useState({});
+  const [todoUpdate, setTodoUpdate] = useState({});
   const [whichModal, setWhichModal] = useState('login' || 'signin' || 'update');
-  const [isAuthCookies, setIsAuthCookies] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
   const router = useRouter();
-
-  useEffect(() => {
-
-  }, []);
 
   const handleInputChange = ({ target: { name, value } }: any, functionSetter: (param: any) => void) => functionSetter((prevState: any) => ({ ...prevState, [name]: value }));
 
@@ -70,8 +67,8 @@ function Provider({ children }: ProviderProps) {
     if (!specialChar.test(value)) setRestrictionList((prevState: any) => ({ ...prevState, specialChar: false }));
     if (value && value.length >= 8) setRestrictionList((prevState: any) => ({ ...prevState, minLength: true }));
     if (!value || value.length < 8) setRestrictionList((prevState: any) => ({ ...prevState, minLength: false }));
-    if (value && value.length < 30) setRestrictionList((prevState: any) => ({ ...prevState, maxLength: true }));
-    if (!value || value.length > 30) setRestrictionList((prevState: any) => ({ ...prevState, maxLength: false }));
+    if (!!value && value.length < 30) setRestrictionList((prevState: any) => ({ ...prevState, maxLength: true }));
+    if (value.length >= 30) setRestrictionList((prevState: any) => ({ ...prevState, maxLength: false }));
   };
 
   const context = useMemo(() => (
@@ -89,7 +86,7 @@ function Provider({ children }: ProviderProps) {
       updateFinalRef,
       whichModal,
       user,
-      isAuthCookies,
+      todoUpdate,
       restrictionList,
       todoList,
       toggleColorMode,
@@ -101,7 +98,7 @@ function Provider({ children }: ProviderProps) {
       handleInputChange,
       handlePassword,
       setUser,
-      setIsAuthCookies,
+      setTodoUpdate,
       setRestrictionList,
       ListValidator,
       setTodoList,
@@ -118,7 +115,7 @@ function Provider({ children }: ProviderProps) {
       onClose,
       whichModal,
       user,
-      isAuthCookies,
+      todoUpdate,
       restrictionList,
       todoList,
     ]

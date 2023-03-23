@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migrate": "npx prisma migrate dev --name init",
+    "db:reset": "npx prisma db push --force-reset && npx prisma db seed"
   },
   "prisma": {
     "schema": "./database/prisma/schema.prisma",
