@@ -16,7 +16,7 @@ const todoFetch = async (id: number) => {
   return todo;
 }
 
-const patchTodoFetch = async (id: number, data: TodoDTO) => {
+const patchTodoFetch = async (id: number, data: TodoDTO[]) => {
   const { 'auth': auth } = parseCookies();
   const authHeader = JSON.parse(auth).token;
   const todo = await axios({

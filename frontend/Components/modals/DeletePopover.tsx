@@ -1,30 +1,33 @@
 import React from 'react';
+import { GetContext } from '@/frontend/Context/Provider';
 import {  
   PopoverContent, 
   PopoverArrow, 
   PopoverCloseButton, 
   PopoverHeader, 
   PopoverBody, 
-  Button 
+  Button,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
-import { GetContext } from '@/frontend/Context/Provider';
 
-export default function DeletePopover() {
+interface DeletePopoverProps {
+  taskId: string;
+}
+
+export default function DeletePopover(props: DeletePopoverProps) {
 
   const { todoList, setTodoList } = GetContext();
 
-  // const handleTodoDelete = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-  //   e.preventDefault();
-  //   try {
-  //     await todoDelete(todoId);
-  //     const newTodoList = todoList.filter((todo) => todo.id !== todoId);
-  //     setTodoList(newTodoList);
-  //     setTodoId('');
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleTodoDelete = () => {
+    // e.preventDefault();
+    try {
+      const deleteTodo = todoList.filter((todo: any) => todo.id !== props.taskId);
+      setTodoList(deleteTodo);
+      localStorage.setItem('todoList', JSON.stringify(deleteTodo));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <PopoverContent boxShadow="dark-lg" >
@@ -36,7 +39,7 @@ export default function DeletePopover() {
           margin="2"
           colorScheme="red"
           leftIcon={<DeleteIcon />}
-          // onClick={(e) => handleTodoDelete(e)}
+          onClick={handleTodoDelete}
         >
           Excluir
         </Button>

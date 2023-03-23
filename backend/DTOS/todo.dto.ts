@@ -1,6 +1,6 @@
 export interface TodoDTO {
   id: string;
   text: string;
-  completed: boolean,
+  completed: boolean;
   owner: string;
-};
+}

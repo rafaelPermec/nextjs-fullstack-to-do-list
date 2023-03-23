@@ -1,9 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
-import { parseCookies } from 'nookies';
+import todoFactory from '@/frontend/Utils/todo.factory';
+import { parseCookies, setCookie } from 'nookies';
 import { GetContext } from '@/frontend/Context/Provider';
-import { todoFetch } from '@/frontend/Services/todo.fetch';
+import { patchTodoFetch, todoFetch } from '@/frontend/Services/todo.fetch';
 import { DeletePopover, TopMenu, UpdateModal } from '@/frontend/Components';
 import { 
   HStack, 
@@ -17,29 +18,26 @@ import {
   Popover,
   PopoverTrigger,
   Button,
+  useToast,
 } from '@chakra-ui/react';
-import { DeleteIcon, EditIcon, SmallAddIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon, SmallAddIcon, CheckIcon, AttachmentIcon } from '@chakra-ui/icons';
 
 export default function TodoList() {
   const { router, setLoading, isLoading, setTodoList, todoList } = GetContext();
 
-  const getUser = localStorage.getItem('user');
-  if (!getUser) {
-    router.push('/');
-  }
-  const parseUser = JSON.parse(getUser as string);
+  const toast = useToast();
 
   useEffect((): any => {
+    const { 'auth': auth } = parseCookies();
+    const getUser = JSON.parse(auth)
     const fetchTodo = async () => {
-      
         setLoading(true);
-        const { data: { todos } } = await todoFetch(parseUser.id);
-        setTodoList(todos);;
+        const { data } = await todoFetch(getUser.id);
+        setTodoList(todoFactory(data.todos, getUser.name));
         setLoading(false);
-        
       }
       fetchTodo();
-  }, [setLoading, setTodoList, isLoading, parseUser.id]);
+    }, [setLoading, setTodoList, isLoading]);
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -52,6 +50,47 @@ export default function TodoList() {
       element.style.color = '';
     } 
   };
+
+  const handleTodoObject = (id: number) => {
+    const checkedItens = todoList.map((todo: any) => {
+      if (id === todo.id) {
+        todo.completed = !todo.completed;
+      } return todo;
+    });
+    setTodoList(checkedItens);
+    console.log(todoList)
+  };
+
+  const clearCompletedTodos = () => {
+    const clearTodo = todoList.filter((todo: any) => todo.completed !== true);
+    setTodoList(clearTodo);
+  };
+
+  const saveChecklist = async () => {
+    setCookie(null, 'todoList', JSON.stringify(todoList), { maxAge: 60 * 60 * 24 * 30,  /* 30 days  */});
+    const user = JSON.parse(localStorage.getItem('user') as string);
+    try {
+      const saveFormat = todoList.map((todo: any) => todo.text)
+      console.log(saveFormat);
+      await patchTodoFetch(user.id, saveFormat)
+      toast({
+        title: 'Sucesso!',
+        description: 'Sua lista de To-Do foi salva com sucesso!',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.log(error)
+      toast({
+        title: 'Algo aconteceu!',
+        description: 'Tente novamente mais tarde!',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  }
 
   return (
     <main>
@@ -78,17 +117,18 @@ export default function TodoList() {
         >
           {
             !isLoading ? (
-            todoList.map((todo: any, index: any) => (
-              <HStack key={index}>
+            todoList.map((todo: any) => (
+              <HStack key={todo.id}>
                 <Checkbox 
                   size='lg' 
                   colorScheme='teal' 
                   borderColor='gray.500'
-                  name={`item-${index + 1}`}
+                  name={`item-${todo.id}`}
                   defaultChecked={false}
-                  onChange={(e) => handleCheck(e)}
+                  onChange={(e) => { handleCheck(e); handleTodoObject(todo.id); }}
+                  checked={todo.completed}
                 />
-                <Text id={`item-${index + 1}`}>{todo}</Text>
+                <Text id={`item-${todo.id}`}>{todo.text}</Text>
                 <Spacer />
                 <IconButton
                   aria-label='Editar item de seu Todo'
@@ -106,7 +146,7 @@ export default function TodoList() {
                         isRound={true}
                       />
                     </PopoverTrigger>
-                  <DeletePopover />
+                  <DeletePopover taskId={todo.id} />
                 </Popover>
               </HStack>
             ))) : (
@@ -114,14 +154,34 @@ export default function TodoList() {
             )
           }
         </VStack>
-        <Button
-          aria-label='Adicionar um novo item a sua lista de To-Do'
-          colorScheme="teal"
-          leftIcon={<SmallAddIcon />}
-          onClick={() => router.push('/todo-list/add')}
-        >
-          Adicionar To-Do
-        </Button>
+        <HStack>
+          <Button
+            aria-label='Adicionar um novo item a sua lista de To-Do'
+            colorScheme="teal"
+            leftIcon={<SmallAddIcon />}
+            onClick={() => router.push('/todo-list/add')}
+          >
+            Adicionar To-Do
+          </Button>
+          <Button
+            aria-label='Adicionar um novo item a sua lista de To-Do'
+            colorScheme="orange"
+            variant="outline"
+            leftIcon={<CheckIcon />}
+            onClick={clearCompletedTodos}
+          >
+            Limpar tarefas completas
+          </Button>
+          <Button
+            aria-label='Adicionar um novo item a sua lista de To-Do'
+            colorScheme="orange"
+            variant="outline"
+            leftIcon={<AttachmentIcon />}
+            onClick={saveChecklist}
+          >
+            Salvar Lista
+          </Button>
+        </HStack>
         <UpdateModal />
       </VStack>
     </main>
@@ -129,8 +189,10 @@ export default function TodoList() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { 'auth': auth } = parseCookies(ctx);
+
+  // const 
   
+  const { 'auth': auth } = parseCookies(ctx);
   if (!auth) {
     return {
       redirect: {

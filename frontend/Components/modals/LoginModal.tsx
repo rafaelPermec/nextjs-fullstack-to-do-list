@@ -26,8 +26,8 @@ export default function LoginModal() {
       loginInitialRef, 
       handleInputChange,
       handlePassword,
-      setLogin,
-      login,
+      setUser,
+      user,
       ListValidator,
     } = GetContext();
     const { serverSideLogin } = useContext(AuthContext);
@@ -38,13 +38,18 @@ export default function LoginModal() {
       e.preventDefault();
   
       try {
-        const loginRequest: any = await serverSideLogin(login);
+        const loginRequest: any = await serverSideLogin(user);
         if (loginRequest.auth) {
           localStorage.setItem('user', JSON.stringify({ 
             id: loginRequest.id, 
             name: loginRequest.name, 
             email : loginRequest.email,
           }));
+          setUser({
+            id: loginRequest.id, 
+            name: loginRequest.name, 
+            email : loginRequest.email,
+          });
           onClose();
           toast({
             title: `Olá, ${loginRequest.name}`,
@@ -97,7 +102,7 @@ export default function LoginModal() {
                   name="email"
                   type="email" 
                   borderColor="gray.300"
-                  onChange={(e) => handleInputChange(e, setLogin)}
+                  onChange={(e) => handleInputChange(e, setUser)}
                 />
               </FormControl>
   
@@ -112,7 +117,7 @@ export default function LoginModal() {
                   onChange={(e) => {
                     ListValidator(e);
                     handlePassword(e);
-                    handleInputChange(e, setLogin);
+                    handleInputChange(e, setUser);
                   }}
                 />
               </FormControl>

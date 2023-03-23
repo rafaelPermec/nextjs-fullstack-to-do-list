@@ -1,7 +1,6 @@
 import React, { useContext, useState, createContext, useMemo, useEffect, useRef } from 'react';
 import { useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { parseCookies } from 'nookies';
 
 export const Context = createContext({});
 
@@ -10,34 +9,14 @@ type ProviderProps = {
 }
 
 function Provider({ children }: ProviderProps) {
-  const [whichModal, setWhichModal] = useState('login' || 'signin' || 'update');
+  // Event Hooks
   const [user, setUser] = useState({});
-  const [login, setLogin] = useState({});
-  const [restrictionList, setRestrictionList] = useState({
-    upperCase: false,
-    lowerCase: false,
-    number: false,
-    specialChar: false,
-    minLength: false,
-    maxLength: false,
-  });
+  const [whichModal, setWhichModal] = useState('login' || 'signin' || 'update');
   const [isAuthCookies, setIsAuthCookies] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
-  const formBackground = useColorModeValue("gray.100", "gray.700");
-  const { toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const router = useRouter();
-
-  const loginInitialRef = useRef(null)
-  const loginFinalRef = useRef(null)
-  const signinInitialRef = useRef(null)
-  const signinFinalRef = useRef(null)
-  const updateInitialRef = useRef(null)
-  const updateFinalRef = useRef(null)
- 
 
   useEffect(() => {
 
@@ -54,6 +33,26 @@ function Provider({ children }: ProviderProps) {
       setUser((prevState: any) => ({ ...prevState, password: '' }));
     }
   };
+
+  // Style Hooks
+  const [restrictionList, setRestrictionList] = useState({
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialChar: false,
+    minLength: false,
+    maxLength: false,
+  });
+
+  const formBackground = useColorModeValue("gray.100", "gray.700");
+  const { toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const loginInitialRef = useRef(null)
+  const loginFinalRef = useRef(null)
+  const signinInitialRef = useRef(null)
+  const signinFinalRef = useRef(null)
+  const updateInitialRef = useRef(null)
+  const updateFinalRef = useRef(null)
   
   const ListValidator = ({ target: { value } }: any) => {
     const upperCase = /(?=.*?[A-Z])/;
@@ -90,7 +89,6 @@ function Provider({ children }: ProviderProps) {
       updateFinalRef,
       whichModal,
       user,
-      login,
       isAuthCookies,
       restrictionList,
       todoList,
@@ -103,7 +101,6 @@ function Provider({ children }: ProviderProps) {
       handleInputChange,
       handlePassword,
       setUser,
-      setLogin,
       setIsAuthCookies,
       setRestrictionList,
       ListValidator,
@@ -121,7 +118,6 @@ function Provider({ children }: ProviderProps) {
       onClose,
       whichModal,
       user,
-      login,
       isAuthCookies,
       restrictionList,
       todoList,
