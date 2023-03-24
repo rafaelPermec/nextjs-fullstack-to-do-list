@@ -146,7 +146,9 @@ export default function TodoList() {
                 />
                 <Text 
                   id={`item-${todo.id}`}
-                  textDecoration={todo.completed ? 'line-through' : 'none'}
+                  textDecoration={
+                    todo.completed ? 'line-through' : 'none'
+                  }
                   color={todo.completed ? 'gray.500' : ''}
                   >
                     {todo.text}
