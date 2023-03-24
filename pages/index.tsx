@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
-import { Megrim } from 'next/font/google';
 import { TopMenu, LoginModal, SigninModal } from '@/frontend/Components';
 import { 
   Text, 
@@ -10,11 +9,6 @@ import {
 import { PlusSquareIcon, BellIcon } from '@chakra-ui/icons';
 import { GetContext } from '@/frontend/Context/Provider';
 
-const megrim = Megrim({
-  weight: '400',
-  style: 'normal',
-  subsets: ['latin'],
-})
 
 export default function Page() {
   const { 
@@ -24,6 +18,7 @@ export default function Page() {
     signinFinalRef,
     whichModal,
     setWhichModal,
+    megrimFont,
   } = GetContext();
 
   const handleLogin = () => {
@@ -52,9 +47,10 @@ export default function Page() {
         boxShadow="dark-lg"
       >
         <Text
-          className={megrim.className}
+          className={megrimFont.className}
           fontSize='7xl' 
           mb={6}
+          color='teal.500'
         >
           ParaTo-Do's
         </Text>

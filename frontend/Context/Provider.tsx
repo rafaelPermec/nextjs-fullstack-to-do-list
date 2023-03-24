@@ -1,13 +1,19 @@
 import React, { useContext, useState, createContext, useMemo, useEffect, useRef } from 'react';
 import { useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-// import { parseCookies } from 'nookies';
+import { Megrim } from 'next/font/google';
 
 export const Context = createContext({});
 
 type ProviderProps = {
   children: React.ReactNode;
 }
+
+const megrimFont = Megrim({
+  weight: '400',
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 function Provider({ children }: ProviderProps) {
   // Event Hooks
@@ -74,6 +80,7 @@ function Provider({ children }: ProviderProps) {
   const context = useMemo(() => (
     {
       // Estados:
+      megrimFont,
       isLoading,
       formBackground, 
       isOpen,

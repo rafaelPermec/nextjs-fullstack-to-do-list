@@ -1,8 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect } from 'react';
 import { GetServerSideProps } from 'next';
-import todoFactory from '@/frontend/Utils/todo.factory';
-import { TodoPropsDTO } from '@/frontend/DTOS/todo.dto';
 import { parseCookies, setCookie } from 'nookies';
 import { GetContext } from '@/frontend/Context/Provider';
 import { patchTodoFetch, todoFetch } from '@/frontend/Services/todo.fetch';
@@ -25,37 +23,26 @@ import { DeleteIcon, EditIcon, SmallAddIcon, CheckIcon, AttachmentIcon } from '@
 
 
 export default function TodoList() {
-  const { router, setLoading, isLoading, setTodoList, todoList } = GetContext();
+  const { router, setLoading, isLoading, setTodoList, todoList, megrimFont } = GetContext();
 
   const toast = useToast();
+  const { 'user': user } = parseCookies();
 
   useEffect((): any => {
-    const { 'user': user } = parseCookies();
     const getUser = JSON.parse(user);
-    console.log(getUser);
+
     const fetchTodo = async () => {
         setLoading(true);
         const { data } = await todoFetch(getUser.id);
-        setTodoList(data.tasks);
+        const parsedData = JSON.parse(data.tasks);
+        setTodoList(parsedData);
         setLoading(false);
       }
       fetchTodo();
-    }, [setLoading, setTodoList, isLoading]);
+    }, [setLoading, setTodoList, isLoading, user]);
 
 
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      const element  = (document.getElementById(`${e.target.name}`)) as any;
-      element.style.textDecoration = 'line-through';
-      element.style.color = 'gray';
-    } else {
-      const element  = (document.getElementById(`${e.target.name}`)) as any;
-      element.style.textDecoration = 'none';
-      element.style.color = '';
-    } 
-  };
-
-  const handleTodoObject = (id: number) => {
+  const handleIsCompleted = (id: number) => {
     const checkedItens = todoList.map((todo: any) => {
       if (id === todo.id) {
         todo.completed = !todo.completed;
@@ -65,16 +52,33 @@ export default function TodoList() {
   };
 
   const clearCompletedTodos = () => {
-    const clearTodo = todoList.filter((todo: any) => todo.completed !== true);
-    setTodoList(clearTodo);
+    try {
+      const clearTodo = todoList.filter((todo: any) => todo.completed !== true);
+      setTodoList(clearTodo);
+      toast({
+        title: 'Sucesso!',
+        description: 'Tarefas concluídas foram removidas!',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+        });
+    } catch (error) {
+      toast({
+        title: 'Algo aconteceu!',
+        description: 'Tente novamente mais tarde!',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+        });
+    }
   };
 
   const saveChecklist = async () => {
     setCookie(null, 'todoList', JSON.stringify(todoList), { maxAge: 60 * 60 * 24 * 30,  /* 30 days  */});
-    const user = JSON.parse(localStorage.getItem('user') as string);
+    const { 'user': user } = parseCookies();
+    const getUser = JSON.parse(user);
     try {
-      const saveFormat = todoList.map((todo: any) => todo.text)
-      await patchTodoFetch(user.id, saveFormat)
+      await patchTodoFetch(getUser.id, { tasks: JSON.stringify(todoList) })
       toast({
         title: 'Sucesso!',
         description: 'Sua lista de To-Do foi salva com sucesso!',
@@ -97,15 +101,27 @@ export default function TodoList() {
     <main>
       <TopMenu />
       <VStack p={12} gap="5">
-        <Heading
-          mb='8'
-          fontWeight='semibold'
-          size='2xl'
-          bgGradient='linear(to-r, teal.500, teal.300, teal.500)'
-          bgClip='text'
+      <Text
+          className={megrimFont.className}
+          fontSize='7xl' 
+          noOfLines={2}
+          color='teal.500'
+          fontWeight='thin'
+          mb={6}
         >
-          Lista de To-Do's
-        </Heading>
+          Fazer 
+          <span style={{ textDecoration: 'line-through' }} >(amanhã)</span>
+          Hoje!
+          {
+          /* {
+          `To-Do's de ${user ? (
+            JSON.parse(user).name.split(' ')[0].charAt(0).toUpperCase() + JSON.parse(user).name.split(' ')[0].slice(1)
+            ) : (
+              'HOJE!'
+            )}`
+          } */
+          }
+        </Text>
         <VStack
           divider={<StackDivider />}
           borderColor='gray.500'
@@ -125,17 +141,23 @@ export default function TodoList() {
                   borderColor='gray.500'
                   name={`item-${todo.id}`}
                   defaultChecked={false}
-                  onChange={(e) => { handleCheck(e); handleTodoObject(todo.id); }}
-                  checked={todo.completed}
+                  onChange={() => handleIsCompleted(todo.id)}
+                  isChecked={todo.completed}
                 />
-                <Text id={`item-${todo.id}`}>{todo.text}</Text>
+                <Text 
+                  id={`item-${todo.id}`}
+                  textDecoration={todo.completed ? 'line-through' : 'none'}
+                  color={todo.completed ? 'gray.500' : ''}
+                  >
+                    {todo.text}
+                </Text>
                 <Spacer />
                 <IconButton
                   aria-label='Editar item de seu Todo'
                   backgroundColor='teal.400'
                   icon={<EditIcon />}
                   isRound={true}
-                  onClick={() => router.push('/todo-list/update')}
+                  onClick={() => router.push(`/todo-list/update/${todo.id}`)}
                 />
                 <Popover>
                     <PopoverTrigger>
@@ -163,7 +185,7 @@ export default function TodoList() {
           </Button>
           <Button
             aria-label='Adicionar um novo item a sua lista de To-Do'
-            colorScheme="orange"
+            colorScheme="teal"
             variant="outline"
             leftIcon={<CheckIcon />}
             onClick={clearCompletedTodos}
@@ -172,7 +194,7 @@ export default function TodoList() {
           </Button>
           <Button
             aria-label='Adicionar um novo item a sua lista de To-Do'
-            colorScheme="orange"
+            colorScheme="teal"
             variant="outline"
             leftIcon={<AttachmentIcon />}
             onClick={saveChecklist}

@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { AuthDTO, LoginDTO, AuthContextDTO } from '../DTOS/login.dto';
-import { setCookie, parseCookies } from 'nookies';
+import { setCookie, parseCookies, destroyCookie } from 'nookies';
 import { loginFetch } from '../Services/login.fetch';
 import { useRouter } from 'next/router';
 
@@ -31,12 +31,21 @@ export function AuthProvider({ children }: any) {
 
   useEffect(() => {
     const { 'auth': authSSR, 'user': userSSR } = parseCookies();
-    const userSSRParse = JSON.parse(userSSR);
-    const allCredentials = { ...userSSRParse,token: authSSR };
+    try {
+      
+    } catch (error) {
+      
+    }
     if (authSSR) {
+      const userSSRParse = JSON.parse(userSSR);
+      const allCredentials = { ...userSSRParse,token: authSSR };
       setIsAuth(allCredentials && undefined);
-    } 
-  }, []);
+    } else {
+      destroyCookie(null, 'user');
+      destroyCookie(null, 'auth');
+      router.push('/')
+    }
+  }, [router]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, user: isAuth, serverSideLogin }}>
