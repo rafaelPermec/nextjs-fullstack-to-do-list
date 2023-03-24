@@ -2,7 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import StatusCodes from 'http-status-codes';
 import { prisma } from '@/lib/prisma';
 import { User } from '@prisma/client';
-import { IUser } from '../DTOS/user.dto';
+import { IUser } from '../DTOS/user.backend.dto';
 import { HttpException } from '../Utils';
 
 export default class UserView {

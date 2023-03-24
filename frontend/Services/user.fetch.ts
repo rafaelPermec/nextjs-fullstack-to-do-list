@@ -1,5 +1,5 @@
 import axios from "axios"
-import { LoginDTO, RegisterDTO } from "../DTOS/login.dto";
+import { LoginDTO, RegisterDTO } from "../DTOS/login.frontend.dto";
 import { parseCookies } from "nookies";
 
 

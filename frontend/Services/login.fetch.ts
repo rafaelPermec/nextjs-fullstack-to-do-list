@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginDTO } from "../DTOS/login.dto";
+import { LoginDTO } from "../DTOS/login.frontend.dto";
 import { parseCookies } from "nookies";
 
 const loginFetch = async (data: LoginDTO) => {

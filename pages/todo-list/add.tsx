@@ -29,7 +29,6 @@ export default function AddTodo() {
         const newList = [...todoList, newTodo];
         const jsonList = JSON.stringify(newList);
         setTodoList(newList);
-        setTodoUpdate('');
         await patchTodoFetch(getUser.id, { tasks: jsonList });
         toast({
           title: "Tarefa adicionada com sucesso!",

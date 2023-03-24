@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { AuthDTO, LoginDTO, AuthContextDTO } from '../DTOS/login.dto';
+import { AuthDTO, LoginDTO, AuthContextDTO } from '../DTOS/login.frontend.dto';
 import { setCookie, parseCookies, destroyCookie } from 'nookies';
 import { loginFetch } from '../Services/login.fetch';
 import { useRouter } from 'next/router';
@@ -31,11 +31,6 @@ export function AuthProvider({ children }: any) {
 
   useEffect(() => {
     const { 'auth': authSSR, 'user': userSSR } = parseCookies();
-    try {
-      
-    } catch (error) {
-      
-    }
     if (authSSR) {
       const userSSRParse = JSON.parse(userSSR);
       const allCredentials = { ...userSSRParse,token: authSSR };

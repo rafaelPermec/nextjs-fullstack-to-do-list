@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { patchTodoFetch } from '@/frontend/Services/todo.fetch';
-import { TodoResponseDTO } from '@/frontend/DTOS/todo.dto';
+import { TodoResponseDTO } from '@/frontend/DTOS/todo.frontend.dto';
 
 export default function UpdateTodo() {
   const { router, handleInputChange, todoUpdate, setTodoUpdate, todoList, setTodoList } = GetContext()
