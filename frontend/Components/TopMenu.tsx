@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { GetContext } from '../Context/Provider';
-import { destroyCookie, parseCookies } from 'nookies';
-import { AuthContext } from '../Context/AuthContext';
+import { destroyCookie } from 'nookies';
 import { 
   Menu, 
   MenuButton, 

@@ -25,6 +25,6 @@ export interface AuthDTO {
 
 export interface AuthContextDTO {
   isAuthenticated: boolean;
-  user: AuthDTO | undefined;
+  isAuth: AuthDTO | undefined;
   serverSideLogin: (user: LoginDTO) => void;
 }

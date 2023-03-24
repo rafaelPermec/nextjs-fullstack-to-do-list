@@ -1,5 +1,4 @@
 import React from 'react';
-import { destroyCookie, parseCookies } from 'nookies';
 import { 
   Button, 
   Modal,
@@ -16,11 +15,9 @@ import {
 } from '@chakra-ui/react';
 import { GetContext } from '@/frontend/Context/Provider';
 import PasswordValidation from '../PasswordValidation';
-import { patchUserFetch } from '@/frontend/Services/user.fetch';
 
 export default function UpdateModal() {
   const { 
-    router,
     isOpen, 
     onClose, 
     updateFinalRef,
@@ -38,29 +35,6 @@ export default function UpdateModal() {
     setUser({});
 
     try {
-      // const { 'user': user } = parseCookies();
-      // const getUser = JSON.parse(user);
-      // const dataRequest = await patchUserFetch(getUser.id, getUser);
-      // if (dataRequest.status === 200) {
-      //   onClose();
-      //   toast({
-      //     title: 'Sucesso!',
-      //     description: 'Conta devidamente modificada! Por favor, faça seu login novamente.',
-      //     status: 'success',
-      //     duration: 2000,
-      //     isClosable: true,
-      //   });
-      //   destroyCookie(null, 'auth');
-      //   router.push('/');
-      // } else {
-      //   toast({
-      //     title: 'Algo aconteceu!',
-      //     description: 'Por favor, ente novamente.',
-      //     status: 'error',
-      //     duration: 2000,
-      //     isClosable: true,
-      //   });
-      // }
       throw new Error();
     } catch (error: any) {
       {

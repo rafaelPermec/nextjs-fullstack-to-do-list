@@ -24,7 +24,7 @@ export default function UpdateTodo() {
       try {
         const { 'user': user } = parseCookies();
         const getUser = JSON.parse(user);
-        const updateTodo = todoList.map((todo: TodoResponseDTO) => {
+        todoList.map((todo: TodoResponseDTO) => {
           if (todo.id === taskId) {
             todo.text = todoUpdate.updateTask;
             return todo;
