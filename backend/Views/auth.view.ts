@@ -1,14 +1,14 @@
 import * as bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { User } from '@prisma/client';
-import { IUserLogin, IUserAuth } from '../DTOS/user.dto';
+import { IUserLogin, IUserAuth } from '../DTOS/user.backend.dto';
 import { StatusCodes } from 'http-status-codes';
 import { generateJWTToken, HttpException } from '../Utils';
 
 export default class AuthView {
   readonly model = prisma.user;
 
-  public async login(login: IUserLogin): Promise<Omit<IUserAuth, 'password' | 'todos' >> {
+  public async login(login: IUserLogin): Promise<Omit<IUserAuth, 'password' | 'tasks' >> {
     const errorMessage = 'Email ou Senha incorretos';
     if (!login.email || !login.password) {
       throw new HttpException(StatusCodes.BAD_REQUEST, 'Todos os campos devem ser preenchidos');
@@ -26,6 +26,7 @@ export default class AuthView {
       id: clientData[0].id,
       email: clientData[0].email,
       name: clientData[0].name,
+      tasks: 'onCookies-todoList'
     });
 
     return {       

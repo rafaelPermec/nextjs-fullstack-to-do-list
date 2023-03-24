@@ -1,7 +1,7 @@
 import { JwtPayload, sign, SignOptions, verify } from 'jsonwebtoken';
 import { HttpException } from '../Utils';
 import { StatusCodes } from 'http-status-codes';
-import { IUser } from '../DTOS/user.dto';
+import { IUser } from '../DTOS/user.backend.dto';
 import 'dotenv/config';
 
 const JWT_SECRET = process.env.TOKEN_SECRET || 'TodoList';

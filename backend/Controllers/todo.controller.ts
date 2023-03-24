@@ -17,9 +17,8 @@ export default class TodoController {
 
   public update = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
-    const todoList = req.body as string[];
-    const todos = await this.view.update(Number(id), todoList);
-    res.status(StatusCodes.OK).json(todos);
+    const { tasks } = req.body;
+    const todos = await this.view.update(Number(id), tasks);
+    res.status(StatusCodes.OK).json({ tasks: todos.tasks, updatedAt: todos.updatedAt });
   }
-
 }

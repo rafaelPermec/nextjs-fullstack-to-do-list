@@ -7,7 +7,7 @@ const authController = new AuthController();
 const handler = nc({ onError: ErrorMiddleware, onNoMatch: NotFoundMiddleware });
 
 handler
-  .get(authenticateMiddleware)
-  .post(LoginTypos, authController.authenticate);
+  .post(LoginTypos, authController.authenticate)
+  .get(authenticateMiddleware);
 
 export default handler;

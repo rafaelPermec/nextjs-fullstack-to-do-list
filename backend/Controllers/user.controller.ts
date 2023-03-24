@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import StatusCodes from 'http-status-codes';
-import { IUser } from '../DTOS/user.dto';
+import { IUser } from '../DTOS/user.backend.dto';
 import { UserView } from '../Views';
 
 export default class UserController {

@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export interface IUserLogin {
   email: string;
   password: string;
@@ -6,7 +8,7 @@ export interface IUserLogin {
 export interface IUser extends IUserLogin {
   id?: number;
   name: string;
-  todos?: string[];
+  tasks: Prisma.JsonValue;
 }
 
 export interface IUserAuth extends IUser {

@@ -2,8 +2,9 @@ import * as bcrypt from 'bcryptjs';
 import StatusCodes from 'http-status-codes';
 import { prisma } from '@/lib/prisma';
 import { User } from '@prisma/client';
-import { IUser } from '../DTOS/user.dto';
+import { IUser } from '../DTOS/user.backend.dto';
 import { HttpException } from '../Utils';
+import { seedPostLoginSchema } from '@/database/seed.postlogin';
 
 export default class UserView {
   readonly model = prisma.user;
@@ -20,22 +21,25 @@ export default class UserView {
     return user as IUser;
   }
 
-  public async create(newUser: IUser): Promise<Omit<User, 'email' | 'password' | 'todos' | 'updatedAt'>> {
+  public async create(newUser: IUser): Promise<Omit<User, 'password' | 'tasks' | 'updatedAt'>> {
     const allUsers = await this.getAll();
     if (allUsers.some((user) => user.email === newUser.email)) {
       throw new HttpException(StatusCodes.CONFLICT, 'Email já cadastrado');
     }
+
+    const jsonTasks = JSON.stringify(seedPostLoginSchema);
+
     const salt = bcrypt.genSaltSync(5);
     newUser.password = bcrypt.hashSync(newUser.password, salt);
     const user = await this.model.create({
-      select: { id: true, name: true, createdAt: true },
-      data: newUser,
+      select: { id: true, name: true, email: true, createdAt: true },
+      data: {...newUser, tasks: jsonTasks },
     });
     if (!user) throw new HttpException(StatusCodes.BAD_REQUEST, 'Usuário não foi criado');
     return user;
   }
 
-  public async update(id: number, updatedUser: IUser): Promise<Omit<User, 'name' | 'password' | 'todos' | 'createdAt'>> {
+  public async update(id: number, updatedUser: IUser): Promise<Omit<User, 'name' | 'password' | 'tasks' | 'createdAt'>> {
     const user = await this.getById(id);
     const alreadyEncrypted = bcrypt.compare(user.password, updatedUser.password);
     if (!alreadyEncrypted) throw new HttpException(StatusCodes.BAD_REQUEST, 'Senha não pode ser igual a anterior');
@@ -47,12 +51,12 @@ export default class UserView {
     const userUpdate = await this.model.update({
       select: { id: true, email: true, updatedAt: true },
       where: { id },
-      data: updatedUser,
+      data: {...updatedUser, tasks: '' },
     });
     return userUpdate;
   }
 
-  public async delete(id: number): Promise<Omit<User, 'password' | 'todos' | 'updatedAt' |'createdAt'>> {
+  public async delete(id: number): Promise<Omit<User, 'password' | 'tasks' | 'updatedAt' |'createdAt'>> {
     const user = await this.model.delete({
       select: { id: true, email: true, name: true },
       where: { id },
