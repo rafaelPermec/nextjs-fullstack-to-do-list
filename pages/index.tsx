@@ -32,53 +32,53 @@ export default function Page() {
   }
 
   return (
-  <main>
-    <TopMenu />
-    <Flex 
-      height="80vh" 
-      alignItems="center" 
-      justifyContent="center" 
-    >
+    <main>
+      <TopMenu />
       <Flex 
-        direction="column" 
-        background={formBackground} 
-        p={12} 
-        rounded={6} 
-        boxShadow="dark-lg"
+        height="80vh" 
+        alignItems="center" 
+        justifyContent="center" 
       >
-        <Text
-          className={megrimFont.className}
-          fontSize='7xl' 
-          mb={6}
-          color='teal.500'
+        <Flex 
+          direction="column" 
+          background={formBackground} 
+          p={12} 
+          rounded={6} 
+          boxShadow="dark-lg"
         >
-          ParaTo-Do's
-        </Text>
-          <Button 
-          colorScheme="teal" 
-          variant="outline" 
-          mb={22} 
-          mt={22}
-          leftIcon={<BellIcon />}
-          ref={loginFinalRef}
-          onClick={handleSignin}
+          <Text
+            className={megrimFont.className}
+            fontSize='7xl' 
+            mb={6}
+            color='teal.500'
           >
-            Cadastre-se
-          </Button>
-          <Button 
-            colorScheme="teal"
-            leftIcon={<PlusSquareIcon />}
-            ref={signinFinalRef}
-            onClick={handleLogin}
-          >
-            Login
-          </Button>
-          {
-            whichModal === 'login' ? <LoginModal /> : <SigninModal />
-          }
+            ParaTo-Do's
+          </Text>
+            <Button 
+            colorScheme="teal" 
+            variant="outline" 
+            mb={22} 
+            mt={22}
+            leftIcon={<BellIcon />}
+            ref={loginFinalRef}
+            onClick={handleSignin}
+            >
+              Cadastre-se
+            </Button>
+            <Button 
+              colorScheme="teal"
+              leftIcon={<PlusSquareIcon />}
+              ref={signinFinalRef}
+              onClick={handleLogin}
+            >
+              Login
+            </Button>
+            {
+              whichModal === 'login' ? <LoginModal /> : <SigninModal />
+            }
+        </Flex>
+        
       </Flex>
-      
-    </Flex>
-  </main>
-    )
+    </main>
+  )
 }

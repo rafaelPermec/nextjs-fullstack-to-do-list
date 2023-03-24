@@ -24,7 +24,6 @@ export default function DeletePopover(props: DeletePopoverProps) {
     try {
       const deleteTodo = todoList.filter((todo: any) => todo.id !== props.taskId);
       setTodoList(deleteTodo);
-      localStorage.setItem('todoList', JSON.stringify(deleteTodo));
       toast({
         title: 'Tarefa deletada com sucesso!',
         description: 'Para gravar sua lista, pressione o botão "Salvar Lista".',

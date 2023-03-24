@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { User } from '@prisma/client';
 import { IUser } from '../DTOS/user.backend.dto';
 import { HttpException } from '../Utils';
+import { seedPostLoginSchema } from '@/database/seed.postlogin';
 
 export default class UserView {
   readonly model = prisma.user;
@@ -25,11 +26,14 @@ export default class UserView {
     if (allUsers.some((user) => user.email === newUser.email)) {
       throw new HttpException(StatusCodes.CONFLICT, 'Email já cadastrado');
     }
+
+    const jsonTasks = JSON.stringify(seedPostLoginSchema);
+
     const salt = bcrypt.genSaltSync(5);
     newUser.password = bcrypt.hashSync(newUser.password, salt);
     const user = await this.model.create({
       select: { id: true, name: true, email: true, createdAt: true },
-      data: {...newUser, tasks: '',},
+      data: {...newUser, tasks: jsonTasks },
     });
     if (!user) throw new HttpException(StatusCodes.BAD_REQUEST, 'Usuário não foi criado');
     return user;

@@ -47,7 +47,14 @@ export default function LoginModal() {
             title: `Olá, ${userSSRParse.name}`,
             description: 'Seja bem-vindo!',
             status: 'success',
-            duration: 2000,
+            duration: 4000,
+            isClosable: true,
+          });
+          toast({
+            title: `Sua sessão expira em:`,
+            description: 'Uma hora!',
+            status: 'warning',
+            duration: 3000,
             isClosable: true,
           });
         } else {
@@ -55,7 +62,7 @@ export default function LoginModal() {
             title: 'Erro no Login',
             description: 'Usuário não autorizado.',
             status: 'error',
-            duration: 2000,
+            duration: 4000,
             isClosable: true,
           });
         }

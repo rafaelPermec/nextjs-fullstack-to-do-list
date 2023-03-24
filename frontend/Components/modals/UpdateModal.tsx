@@ -1,5 +1,5 @@
 import React from 'react';
-import { destroyCookie } from 'nookies';
+import { destroyCookie, parseCookies } from 'nookies';
 import { 
   Button, 
   Modal,
@@ -28,7 +28,6 @@ export default function UpdateModal() {
     handleInputChange,
     handlePassword,
     setUser,
-    user,
     ListValidator,
   } = GetContext();
 
@@ -37,40 +36,42 @@ export default function UpdateModal() {
   const handleUpdateUser = async (e: any) => {
     e.preventDefault();
     setUser({});
-    localStorage.removeItem('user');
 
     try {
-      const { id } = JSON.parse((localStorage.getItem('user')) as string);
-      const dataRequest = await patchUserFetch(id, user);
-      if (dataRequest.status === 200) {
-        onClose();
-        toast({
-          title: 'Sucesso!',
-          description: 'Conta devidamente modificada! Por favor, faça seu login novamente.',
-          status: 'success',
-          duration: 2000,
-          isClosable: true,
-        });
-        localStorage.removeItem('user');
-        destroyCookie(null, 'auth');
-        router.push('/');
-      } else {
-        toast({
-          title: 'Algo aconteceu!',
-          description: 'Por favor, ente novamente.',
-          status: 'error',
-          duration: 2000,
-          isClosable: true,
-        });
-      }
+      // const { 'user': user } = parseCookies();
+      // const getUser = JSON.parse(user);
+      // const dataRequest = await patchUserFetch(getUser.id, getUser);
+      // if (dataRequest.status === 200) {
+      //   onClose();
+      //   toast({
+      //     title: 'Sucesso!',
+      //     description: 'Conta devidamente modificada! Por favor, faça seu login novamente.',
+      //     status: 'success',
+      //     duration: 2000,
+      //     isClosable: true,
+      //   });
+      //   destroyCookie(null, 'auth');
+      //   router.push('/');
+      // } else {
+      //   toast({
+      //     title: 'Algo aconteceu!',
+      //     description: 'Por favor, ente novamente.',
+      //     status: 'error',
+      //     duration: 2000,
+      //     isClosable: true,
+      //   });
+      // }
+      throw new Error();
     } catch (error: any) {
-      toast({
-        title: 'Erro ao criar usuário.',
-        description: ('Por favor, entre novamente.' || error.response.data.message),
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-      });
+      {
+        toast({
+          title: 'Essa funcionalidade está por vir!',
+          description: 'Entre mais tarde para ver o resultado.',
+          status: 'warning',
+          duration: 2000,
+          isClosable: true,
+        })
+      }
     }
   }
 

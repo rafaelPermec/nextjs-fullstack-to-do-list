@@ -16,16 +16,16 @@ import { patchTodoFetch } from '@/frontend/Services/todo.fetch';
 
 
 export default function AddTodo() {
-  const { router, handleInputChange, todoUpdate, setTodoUpdate, todoList, setTodoList } = GetContext();
+  const { router, handleInputChange, todoAdd, setTodoAdd, todoList, setTodoList } = GetContext();
 
   const toast = useToast()
 
   const handleAddTodo = async () => {
     const { 'user': user } = parseCookies();
     const getUser = JSON.parse(user);
-    if (todoUpdate.length !== 0) {
+    if (todoAdd.length !== 0) {
       try {
-        const newTodo = todoFactory(todoUpdate.addTask, getUser.id);
+        const newTodo = todoFactory(todoAdd.addTask, getUser.id);
         const newList = [...todoList, newTodo];
         const jsonList = JSON.stringify(newList);
         setTodoList(newList);
@@ -67,7 +67,7 @@ export default function AddTodo() {
               mb={8} 
               placeholder='Ex: Ir ao dentista' 
               name="addTask"
-              onChange={(e) => handleInputChange(e, setTodoUpdate)} 
+              onChange={(e) => handleInputChange(e, setTodoAdd)} 
               required
             />
             <Button 

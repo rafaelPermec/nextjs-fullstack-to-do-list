@@ -8,7 +8,6 @@ import { DeletePopover, TopMenu, UpdateModal } from '@/frontend/Components';
 import { 
   HStack, 
   VStack, 
-  Heading, 
   Text, 
   Checkbox, 
   Spacer, 
@@ -18,6 +17,9 @@ import {
   PopoverTrigger,
   Button,
   useToast,
+  Stack,
+  Skeleton,
+  Tooltip,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, SmallAddIcon, CheckIcon, AttachmentIcon } from '@chakra-ui/icons';
 
@@ -26,20 +28,28 @@ export default function TodoList() {
   const { router, setLoading, isLoading, setTodoList, todoList, megrimFont } = GetContext();
 
   const toast = useToast();
-  const { 'user': user } = parseCookies();
 
+  
   useEffect((): any => {
+    const { 'user': user } = parseCookies();
     const getUser = JSON.parse(user);
 
-    const fetchTodo = async () => {
-        setLoading(true);
-        const { data } = await todoFetch(getUser.id);
-        const parsedData = JSON.parse(data.tasks);
-        setTodoList(parsedData);
+    const handleLoading = () => {
+      setLoading(true);
+      setTimeout(() => {
         setLoading(false);
-      }
-      fetchTodo();
-    }, [setLoading, setTodoList, isLoading, user]);
+      }, 2000);
+    };
+    handleLoading();
+    
+    const fetchTodo = async () => {
+      const { data } = await todoFetch(getUser.id);
+      const parsedData = JSON.parse(data.tasks);
+      setTodoList(parsedData);
+    }
+    fetchTodo();
+   
+  }, [setLoading, setTodoList]);
 
 
   const handleIsCompleted = (id: number) => {
@@ -106,21 +116,10 @@ export default function TodoList() {
           fontSize='7xl' 
           noOfLines={2}
           color='teal.500'
-          fontWeight='thin'
-          mb={6}
+          mb={-4}
+          mt={-6}
         >
-          Fazer 
-          <span style={{ textDecoration: 'line-through' }} >(amanhã)</span>
-          Hoje!
-          {
-          /* {
-          `To-Do's de ${user ? (
-            JSON.parse(user).name.split(' ')[0].charAt(0).toUpperCase() + JSON.parse(user).name.split(' ')[0].slice(1)
-            ) : (
-              'HOJE!'
-            )}`
-          } */
-          }
+          Lista de Tarefas:
         </Text>
         <VStack
           divider={<StackDivider />}
@@ -128,82 +127,96 @@ export default function TodoList() {
           borderWidth='2px'
           p='4'
           borderRadius='lg'
-          w='100%'
-          maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
           alignItems='stretch'
         >
-          {
+          { 
             todoList.map((todo: any) => (
-              <HStack key={todo.id}>
-                <Checkbox 
-                  size='lg' 
-                  colorScheme='teal' 
-                  borderColor='gray.500'
-                  name={`item-${todo.id}`}
-                  defaultChecked={false}
-                  onChange={() => handleIsCompleted(todo.id)}
-                  isChecked={todo.completed}
-                />
-                <Text 
-                  id={`item-${todo.id}`}
-                  textDecoration={
-                    todo.completed ? 'line-through' : 'none'
-                  }
-                  color={todo.completed ? 'gray.500' : ''}
-                  >
-                    {todo.text}
-                </Text>
-                <Spacer />
-                <IconButton
-                  aria-label='Editar item de seu Todo'
-                  backgroundColor='teal.400'
-                  icon={<EditIcon />}
-                  isRound={true}
-                  onClick={() => router.push(`/todo-list/update/${todo.id}`)}
-                />
-                <Popover>
-                    <PopoverTrigger>
-                      <IconButton
-                        aria-label='Deletar item de seu Todo'
-                        backgroundColor='red.300'
-                        icon={<DeleteIcon />}
-                        isRound={true}
-                      />
-                    </PopoverTrigger>
-                  <DeletePopover taskId={todo.id} />
-                </Popover>
-              </HStack>
+              <Skeleton
+                isLoaded={!isLoading}
+                fadeDuration={4}
+                key={todo.id}
+              >
+                <HStack key={todo.id}>
+                    <Checkbox 
+                      size='lg' 
+                      colorScheme='teal' 
+                      borderColor='gray.500'
+                      name={`item-${todo.id}`}
+                      defaultChecked={false}
+                      onChange={() => handleIsCompleted(todo.id)}
+                      isChecked={todo.completed}
+                    />
+                  <Text 
+                    id={`item-${todo.id}`}
+                    textDecoration={
+                      todo.completed ? 'line-through' : 'none'
+                    }
+                    color={todo.completed ? 'gray.500' : ''}
+                    >
+                      {todo.text}
+                  </Text>
+                  <Spacer />
+                  <Tooltip hasArrow label="Modifique essa tarefa" fontSize='xs'>
+                    <IconButton
+                      aria-label='Editar item de seu Todo'
+                      backgroundColor='teal.400'
+                      icon={<EditIcon />}
+                      isRound={true}
+                      onClick={() => router.push(`/todo-list/update/${todo.id}`)}
+                    />
+                  </Tooltip>
+                  <Popover>
+                      <PopoverTrigger>
+                        <IconButton
+                          aria-label='Deletar item de seu Todo'
+                          backgroundColor='red.300'
+                          icon={<DeleteIcon />}
+                          isRound={true}
+                        />
+                      </PopoverTrigger>
+                    <DeletePopover taskId={todo.id} />
+                  </Popover>
+                </HStack>
+              </ Skeleton>
             ))
           }
         </VStack>
-        <HStack>
-          <Button
-            aria-label='Adicionar um novo item a sua lista de To-Do'
-            colorScheme="teal"
-            leftIcon={<SmallAddIcon />}
-            onClick={() => router.push('/todo-list/add')}
-          >
-            Adicionar To-Do
-          </Button>
-          <Button
-            aria-label='Adicionar um novo item a sua lista de To-Do'
-            colorScheme="teal"
-            variant="outline"
-            leftIcon={<CheckIcon />}
-            onClick={clearCompletedTodos}
-          >
-            Limpar tarefas completas
-          </Button>
-          <Button
-            aria-label='Adicionar um novo item a sua lista de To-Do'
-            colorScheme="teal"
-            variant="outline"
-            leftIcon={<AttachmentIcon />}
-            onClick={saveChecklist}
-          >
-            Salvar Lista
-          </Button>
-        </HStack>
+        <Stack
+          direction={['column', 'row']}
+        >
+          <Tooltip hasArrow label="Crie uma tarefa" fontSize='xs'>
+            <Button
+              aria-label='Adicionar um novo item a sua lista de To-Do'
+              colorScheme="teal"
+              leftIcon={<SmallAddIcon />}
+              onClick={() => router.push('/todo-list/add')}
+            >
+              Adicionar To-Do
+            </Button>
+          </Tooltip>
+          <Tooltip hasArrow label="Deletar tarefas concluídas" fontSize='xs'>
+            <Button
+              aria-label='Adicionar um novo item a sua lista de To-Do'
+              colorScheme="teal"
+              variant="outline"
+              leftIcon={<CheckIcon />}
+              onClick={clearCompletedTodos}
+            >
+              Limpar tarefas completas
+            </Button>
+          </Tooltip>
+          <Tooltip hasArrow label="Registrar lista atual" fontSize='xs'>
+            <Button
+              aria-label='Adicionar um novo item a sua lista de To-Do'
+              colorScheme="teal"
+              variant="outline"
+              leftIcon={<AttachmentIcon />}
+              onClick={saveChecklist}
+            >
+              Salvar Lista
+            </Button>
+          </Tooltip>
+        </Stack>
         <UpdateModal />
       </VStack>
     </main>

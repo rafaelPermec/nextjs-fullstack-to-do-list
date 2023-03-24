@@ -1,7 +1,7 @@
-import React, { useContext, useState, createContext, useMemo, useEffect, useRef } from 'react';
-import { useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
+import React, { useContext, useState, createContext, useMemo, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { Megrim } from 'next/font/google';
+import { useColorMode, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 
 export const Context = createContext({});
 
@@ -18,6 +18,8 @@ const megrimFont = Megrim({
 function Provider({ children }: ProviderProps) {
   // Event Hooks
   const [user, setUser] = useState({});
+  const [isAuth, setIsAuth] = useState(false);
+  const [todoAdd, setTodoAdd] = useState({});
   const [todoUpdate, setTodoUpdate] = useState({});
   const [whichModal, setWhichModal] = useState('login' || 'signin' || 'update');
   const [todoList, setTodoList] = useState([]);
@@ -82,6 +84,7 @@ function Provider({ children }: ProviderProps) {
       // Estados:
       megrimFont,
       isLoading,
+      isAuth,
       formBackground, 
       isOpen,
       router,
@@ -93,6 +96,7 @@ function Provider({ children }: ProviderProps) {
       updateFinalRef,
       whichModal,
       user,
+      todoAdd,
       todoUpdate,
       restrictionList,
       todoList,
@@ -101,10 +105,12 @@ function Provider({ children }: ProviderProps) {
       onClose, 
       // Funções Operacionais:
       setLoading,
+      setIsAuth,
       setWhichModal,
       handleInputChange,
       handlePassword,
       setUser,
+      setTodoAdd,
       setTodoUpdate,
       setRestrictionList,
       ListValidator,
@@ -114,6 +120,7 @@ function Provider({ children }: ProviderProps) {
     [
       // Observer
       isLoading,
+      isAuth,
       formBackground,
       toggleColorMode,
       isOpen, 
@@ -122,6 +129,7 @@ function Provider({ children }: ProviderProps) {
       onClose,
       whichModal,
       user,
+      todoAdd,
       todoUpdate,
       restrictionList,
       todoList,

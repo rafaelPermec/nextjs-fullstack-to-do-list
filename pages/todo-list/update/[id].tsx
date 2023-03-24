@@ -20,18 +20,16 @@ export default function UpdateTodo() {
   const toast = useToast()
   
   const handleUpdateTodo = async () => {
-    const { 'user': user } = parseCookies();
-    const getUser = JSON.parse(user);
     if (todoUpdate.length !== 0) {
       try {
+        const { 'user': user } = parseCookies();
+        const getUser = JSON.parse(user);
         const updateTodo = todoList.map((todo: TodoResponseDTO) => {
           if (todo.id === taskId) {
             todo.text = todoUpdate.updateTask;
             return todo;
-          } 
+          } return todo;
         });
-        // console.log('todoList', todoList)
-        // console.log(updateTodo)
         const jsonList = JSON.stringify(todoList);
         setTodoList(todoList);
         setTodoUpdate('');
@@ -72,7 +70,7 @@ export default function UpdateTodo() {
           <Textarea 
             mb={8} placeholder='Ex: Ir ao dentista' 
             name="updateTask"
-            onClick={(e) => handleInputChange(e, setTodoUpdate)}
+            onChange={(e) => handleInputChange(e, setTodoUpdate)}
             required
           />
           <Button 

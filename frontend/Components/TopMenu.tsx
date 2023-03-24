@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { GetContext } from '../Context/Provider';
-import { destroyCookie } from 'nookies';
+import { destroyCookie, parseCookies } from 'nookies';
 import { AuthContext } from '../Context/AuthContext';
 import { 
   Menu, 
@@ -22,7 +22,9 @@ import {
 } from '@chakra-ui/icons';
 
 export default function TopMenu() {
-  const { 
+  const {
+    isAuth,
+    setIsAuth,
     toggleColorMode, 
     router,
     updateFinalRef,
@@ -30,7 +32,13 @@ export default function TopMenu() {
     setWhichModal,
   } = GetContext();
 
-  const { isAuthenticated } = useContext(AuthContext);
+  useEffect(() => {
+    if (router.pathname === '/') {
+      setIsAuth(false);
+    } else {
+      setIsAuth(true);
+    }
+  }, [router, setIsAuth]);
 
 
   const redirectToMyPortifolio = () => router.push('https://rafaelpermec.github.io/');
@@ -49,8 +57,8 @@ export default function TopMenu() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    destroyCookie(null, 'auth', { path: '/' })
+    destroyCookie(null, 'auth')
+    destroyCookie(null, 'user')
     router.push('/');
   }
 
@@ -70,7 +78,7 @@ export default function TopMenu() {
       <MenuList shadow="dark-lg" >
       <MenuGroup title='Perfil'>
           {
-            !isAuthenticated ? (
+            !isAuth ? (
               <>
               <MenuItem 
                 icon={<PlusSquareIcon />} 
