@@ -39,7 +39,8 @@ export default function Page() {
         alignItems="center" 
         justifyContent="center" 
       >
-        <Flex 
+        <Flex
+          data-cy="form-container"
           direction="column" 
           background={formBackground} 
           p={12} 

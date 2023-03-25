@@ -23,7 +23,7 @@ export default function AddTodo() {
   const handleAddTodo = async () => {
     const { 'user': user } = parseCookies();
     const getUser = JSON.parse(user);
-    if (todoAdd.length !== 0) {
+    if (todoAdd.addTask.length > 0) {
       try {
         const newTodo = todoFactory(todoAdd.addTask, getUser.id);
         const newList = [...todoList, newTodo];
@@ -31,6 +31,7 @@ export default function AddTodo() {
         setTodoList(newList);
         await patchTodoFetch(getUser.id, { tasks: jsonList });
         toast({
+          id: 'success-add-todo',
           title: "Tarefa adicionada com sucesso!",
           status: "success",
           duration: 3000,
@@ -48,6 +49,7 @@ export default function AddTodo() {
       }
     } else {
       toast({
+        id: 'error-add-todo',
         title: "Erro ao adicionar tarefa!",
         description: "Preencha o campo acima.",
         status: "error",
@@ -55,6 +57,7 @@ export default function AddTodo() {
         isClosable: true,
       });
     }
+    setTodoAdd({ addTask: '' });
   };
 
   return (
@@ -64,6 +67,7 @@ export default function AddTodo() {
         <Flex direction="column" p={12} rounded={6} boxShadow="dark-lg">
           <Heading mb={6}>Adicione uma Tarefa</Heading>
             <Textarea 
+              data-cy="add-task"
               mb={8} 
               placeholder='Ex: Ir ao dentista' 
               name="addTask"
@@ -71,6 +75,7 @@ export default function AddTodo() {
               required
             />
             <Button 
+              data-cy="add-task-button"
               colorScheme="teal" 
               mb={6} 
               type="submit"
@@ -79,6 +84,7 @@ export default function AddTodo() {
               Adicionar
             </Button>
             <Button
+              data-cy="add-task-back-button"
               leftIcon={<ArrowBackIcon />}
               colorScheme="facebook" 
               mb={6}

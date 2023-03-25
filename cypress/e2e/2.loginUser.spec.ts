@@ -1,4 +1,4 @@
-describe('2. Login de Usuário', () => {
+describe('2. Login de Usuário e Toasts de Sucesso e Erro:', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000')
     const loginButtom = cy.get('[data-cy=login-button]').contains('Login')
@@ -16,7 +16,7 @@ describe('2. Login de Usuário', () => {
     loginButton.click()
 
     cy.get('[id=toast-error-login-title]').should('be.visible')
-    cy.get('[id=toast-error-login-title]').contains('Erro ao criar usuário')
+    cy.get('[id=toast-error-login-title]').contains('Erro no Login')
     cy.get('[id=toast-error-login-description]').contains('Insira um email válido')
   })
 
@@ -30,7 +30,7 @@ describe('2. Login de Usuário', () => {
     loginButton.click()
 
     cy.get('[id=toast-error-login-title]').should('be.visible')
-    cy.get('[id=toast-error-login-title]').contains('Erro ao criar usuário')
+    cy.get('[id=toast-error-login-title]').contains('Erro no Login')
     cy.get('[id=toast-error-login-description]').contains('As senhas devem conter pelo menos 8 caracteres, uma maiúscula, uma minúscula, um número e um caractere especial')
   })
 
@@ -49,8 +49,8 @@ describe('2. Login de Usuário', () => {
     cy.get('[id=toast-expire-login-title]').should('be.visible')
     cy.get('[id=toast-expire-login-title]').contains('Sua sessão expira em:')
     cy.get('[id=toast-expire-login-description]').contains('Uma hora!')
-    cy.url().should('include', '/todo-list')
     cy.getCookie('auth').should('exist')
     cy.getCookie('user').should('exist')
+    cy.url().should('contain', '/todo-list')
   })
 });

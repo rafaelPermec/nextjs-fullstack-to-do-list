@@ -20,7 +20,7 @@ export default function UpdateTodo() {
   const toast = useToast()
   
   const handleUpdateTodo = async () => {
-    if (todoUpdate.length !== 0) {
+    if (todoUpdate.updateTask.length) {
       try {
         const { 'user': user } = parseCookies();
         const getUser = JSON.parse(user);
@@ -35,6 +35,7 @@ export default function UpdateTodo() {
         setTodoUpdate('');
         await patchTodoFetch(getUser.id, { tasks: jsonList });
         toast({
+          id: 'success-update-todo',
           title: "Tarefa modificada com sucesso!",
           status: "success",
           duration: 3000,
@@ -52,6 +53,7 @@ export default function UpdateTodo() {
       }
     } else {
       toast({
+        id: 'error-update-todo',
         title: "Erro ao modificar tarefa!",
         description: "Preencha o campo acima.",
         status: "error",
@@ -59,6 +61,7 @@ export default function UpdateTodo() {
         isClosable: true,
       });
     }
+    setTodoUpdate({ updateTask: '' });
   };
 
   return (
@@ -68,12 +71,14 @@ export default function UpdateTodo() {
       <Flex direction="column" p={12} rounded={6} boxShadow="dark-lg">
         <Heading mb={6}>Modifique uma Tarefa</Heading>
           <Textarea 
+            data-cy="update-task"
             mb={8} placeholder='Ex: Ir ao dentista' 
             name="updateTask"
             onChange={(e) => handleInputChange(e, setTodoUpdate)}
             required
           />
           <Button 
+            data-cy="update-task-button"
             colorScheme="teal" 
             mb={6} 
             type="submit"
@@ -82,6 +87,7 @@ export default function UpdateTodo() {
             Modificar
           </Button>
           <Button
+              data-cy="update-task-back-button"
               leftIcon={<ArrowBackIcon />}
               colorScheme="facebook" 
               mb={6}

@@ -138,7 +138,7 @@ export default function SigninModal() {
                     colorScheme='teal' 
                     mr={3} 
                     type="submit" 
-                    onClick={(e) => {handleCreateUser(e); setUser({})}}
+                    onClick={(e) => {handleCreateUser(e);}}
                   >
                     Criar Usuário
                   </Button>

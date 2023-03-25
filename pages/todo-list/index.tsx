@@ -44,7 +44,6 @@ export default function TodoList() {
     
     const fetchTodo = async () => {
       const { data } = await todoFetch(getUser.id);
-      console.log(data)
       const parsedData = JSON.parse(data.tasks);
       setTodoList(parsedData);
     }
@@ -67,6 +66,7 @@ export default function TodoList() {
       const clearTodo = todoList.filter((todo: any) => todo.completed !== true);
       setTodoList(clearTodo);
       toast({
+        id: 'clear-completed-todo',
         title: 'Sucesso!',
         description: 'Tarefas concluídas foram removidas!',
         status: 'success',
@@ -91,6 +91,7 @@ export default function TodoList() {
     try {
       await patchTodoFetch(getUser.id, { tasks: JSON.stringify(todoList) })
       toast({
+        id: 'save-todo-checklist',
         title: 'Sucesso!',
         description: 'Sua lista de To-Do foi salva com sucesso!',
         status: 'success',
@@ -113,6 +114,7 @@ export default function TodoList() {
       <TopMenu />
       <VStack p={12} gap="5">
       <Text
+          data-cy='todo-title'
           className={megrimFont.className}
           fontSize='7xl' 
           noOfLines={2}
@@ -120,7 +122,7 @@ export default function TodoList() {
           mb={-4}
           mt={-6}
         >
-          Lista de Tarefas:
+          Lista de Tarefas
         </Text>
         <VStack
           divider={<StackDivider />}
@@ -132,14 +134,15 @@ export default function TodoList() {
           alignItems='stretch'
         >
           { 
-            todoList.map((todo: any) => (
+            todoList.map((todo: any, index: number) => (
               <Skeleton
                 isLoaded={!isLoading}
                 fadeDuration={4}
                 key={todo.id}
               >
-                <HStack key={todo.id}>
+                <HStack key={todo.id} data-cy={`todo-item-${index + 1}`}>
                     <Checkbox 
+                      data-cy={`todo-checkbox-${index + 1}`}
                       size='lg' 
                       colorScheme='teal' 
                       borderColor='gray.500'
@@ -150,6 +153,7 @@ export default function TodoList() {
                     />
                   <Text 
                     id={`item-${todo.id}`}
+                    data-cy={`todo-text-${index + 1}`}
                     textDecoration={
                       todo.completed ? 'line-through' : 'none'
                     }
@@ -160,6 +164,7 @@ export default function TodoList() {
                   <Spacer />
                   <Tooltip hasArrow label="Modifique essa tarefa" fontSize='xs'>
                     <IconButton
+                      data-cy={`todo-edit-${index + 1}`}
                       aria-label='Editar item de seu Todo'
                       backgroundColor='teal.400'
                       icon={<EditIcon />}
@@ -170,13 +175,14 @@ export default function TodoList() {
                   <Popover>
                       <PopoverTrigger>
                         <IconButton
+                          data-cy={`todo-delete-${index + 1}`}
                           aria-label='Deletar item de seu Todo'
                           backgroundColor='red.300'
                           icon={<DeleteIcon />}
                           isRound={true}
                         />
                       </PopoverTrigger>
-                    <DeletePopover taskId={todo.id} />
+                    <DeletePopover taskId={todo.id} taskIndex={index + 1} />
                   </Popover>
                 </HStack>
               </ Skeleton>
@@ -188,6 +194,7 @@ export default function TodoList() {
         >
           <Tooltip hasArrow label="Crie uma tarefa" fontSize='xs'>
             <Button
+              data-cy='todo-add-button'
               aria-label='Adicionar um novo item a sua lista de To-Do'
               colorScheme="teal"
               leftIcon={<SmallAddIcon />}
@@ -198,6 +205,7 @@ export default function TodoList() {
           </Tooltip>
           <Tooltip hasArrow label="Deletar tarefas concluídas" fontSize='xs'>
             <Button
+              data-cy='todo-clear-button'
               aria-label='Adicionar um novo item a sua lista de To-Do'
               colorScheme="teal"
               variant="outline"
@@ -209,6 +217,7 @@ export default function TodoList() {
           </Tooltip>
           <Tooltip hasArrow label="Registrar lista atual" fontSize='xs'>
             <Button
+              data-cy='todo-save-button'
               aria-label='Adicionar um novo item a sua lista de To-Do'
               colorScheme="teal"
               variant="outline"

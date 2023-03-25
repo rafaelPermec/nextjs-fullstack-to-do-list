@@ -135,7 +135,7 @@ export default function LoginModal() {
                 colorScheme='teal' 
                 mr={3} 
                 type="submit" 
-                onClick={(e) => {handleLogin(e); setUser({});}}
+                onClick={(e) => handleLogin(e)}
               >
                 Bem-Vindo(a)!
               </Button>

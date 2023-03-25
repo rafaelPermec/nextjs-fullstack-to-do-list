@@ -1,4 +1,6 @@
-describe('1. Criação de Usuário', () => {
+import { v4 as uuid } from "uuid";
+
+describe('1. Criação de Usuário e Toasts de Sucesso e Erro:', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000')
     const signinButtom = cy.get('[data-cy=signin-button]').contains('Cadastre-se')
@@ -60,9 +62,11 @@ describe('1. Criação de Usuário', () => {
     const signinEmailInput = cy.get('[data-cy=signin-input-email]')
     const signinPasswordInput = cy.get('[data-cy=signin-input-password]')
     const signinButton = cy.get('[data-cy=signin-create-button]').contains('Criar Usuário')
+
+    const randomEmail = uuid().substring(0, 8) + '@test.com'
     
-    signinNameInput.type('Joanna')
-    signinEmailInput.type('cypress@test.com')
+    signinNameInput.type('Cypress Test')
+    signinEmailInput.type(randomEmail)
     signinPasswordInput.type('$Test123')
     signinButton.click()
 

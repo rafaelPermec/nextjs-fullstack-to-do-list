@@ -5,5 +5,7 @@ export default defineConfig({
       baseUrl: "http://localhost:3000",
       video: false,
       screenshotOnRunFailure: false,
+      execTimeout: 30000,
+      specPattern: "**/*.spec.ts",
   },
 });
