@@ -44,17 +44,19 @@ export default function LoginModal() {
         if (authSSR) {
           onClose();
           toast({
+            id: 'success-login',
             title: `Olá, ${userSSRParse.name}`,
-            description: 'Seja bem-vindo!',
+            description: 'Seja bem-vindo(a)!',
             status: 'success',
             duration: 4000,
             isClosable: true,
           });
           toast({
+            id: 'expire-login',
             title: `Sua sessão expira em:`,
             description: 'Uma hora!',
             status: 'warning',
-            duration: 3000,
+            duration: 4000,
             isClosable: true,
           });
         } else {
@@ -68,10 +70,11 @@ export default function LoginModal() {
         }
       } catch (error: any) {
         toast({
+          id: 'error-login',
           title: 'Erro no Login',
           description: error.response.data.message,
           status: 'error',
-          duration: 2000,
+          duration: 4000,
           isClosable: true,
         });
       }
@@ -95,7 +98,8 @@ export default function LoginModal() {
             <ModalBody pb={6}>
               <FormControl id="user_login">
                 <FormLabel>E-mail:</FormLabel>
-                <Input 
+                <Input
+                  data-cy='login-input-email'
                   ref={loginInitialRef} 
                   placeholder='E-mail'
                   name="email"
@@ -108,6 +112,7 @@ export default function LoginModal() {
               <FormControl mt={4} id="user_login">
                 <FormLabel>Senha</FormLabel>
                 <Input 
+                  data-cy='login-input-password'
                   placeholder='Senha' 
                   type="password"
                   name="password"
@@ -125,11 +130,18 @@ export default function LoginModal() {
   
             <ModalFooter>
             <FormControl id="user_login">
-              <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => {handleLogin(e); setUser({});}}>
-                Bem-Vindo!
+              <Button
+                data-cy='login-button'
+                colorScheme='teal' 
+                mr={3} 
+                type="submit" 
+                onClick={(e) => {handleLogin(e); setUser({});}}
+              >
+                Bem-Vindo(a)!
               </Button>
             </FormControl>
               <Button 
+                data-cy='login-button-back'
                 onClick={onClose} 
                 colorScheme='teal' 
                 variant='outline' 

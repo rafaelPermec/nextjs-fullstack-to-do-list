@@ -49,6 +49,7 @@ export default function DeletePopover(props: DeletePopoverProps) {
       <PopoverHeader>Confirme:</PopoverHeader>
       <PopoverBody>Você tem certeza que quer deletar essa tarefa?</PopoverBody>
         <Button
+          data-cy="popover-delete-todo-button"
           margin="2"
           colorScheme="red"
           leftIcon={<DeleteIcon />}

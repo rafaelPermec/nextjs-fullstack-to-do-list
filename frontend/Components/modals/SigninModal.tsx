@@ -39,6 +39,7 @@ export default function SigninModal() {
       if (data) {
         onClose();
         toast({
+          id: 'success-signin',
           title: 'Bem vindo!',
           description: 'Agora faça seu login!',
           status: 'success',
@@ -56,6 +57,7 @@ export default function SigninModal() {
       }
     } catch (error: any) {
       toast({
+        id: 'error-signin',
         title: 'Erro ao criar usuário.',
         description: error.response.data.message,
         status: 'error',
@@ -87,6 +89,7 @@ export default function SigninModal() {
                   <FormLabel htmlFor='name' >Seu nome:</FormLabel>
                   <Input
                     id='name'
+                    data-cy='signin-input-name'
                     ref={signinInitialRef}
                     placeholder='Nome'
                     name="name"
@@ -99,6 +102,7 @@ export default function SigninModal() {
                     <FormLabel htmlFor='email' >E-mail:</FormLabel>
                     <Input 
                       id='email'
+                      data-cy='signin-input-email'
                       placeholder='Email' 
                       type='email'
                       name="email"
@@ -111,6 +115,7 @@ export default function SigninModal() {
                     <FormLabel htmlFor='password'>Senha:</FormLabel>
                     <Input 
                       id='password'
+                      data-cy='signin-input-password'
                       placeholder='Senha' 
                       type='password'
                       name="password" 
@@ -128,11 +133,18 @@ export default function SigninModal() {
     
                 <ModalFooter>
                   <FormControl id="create_new_user">
-                  <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => {handleCreateUser(e); setUser({})}}>
-                    Bem-Vindo!
+                  <Button 
+                    data-cy='signin-create-button'
+                    colorScheme='teal' 
+                    mr={3} 
+                    type="submit" 
+                    onClick={(e) => {handleCreateUser(e); setUser({})}}
+                  >
+                    Criar Usuário
                   </Button>
                 </FormControl>
-                <Button 
+                <Button
+                  data-cy='signin-button-back'
                   onClick={onClose} 
                   colorScheme='teal' 
                   variant='outline'

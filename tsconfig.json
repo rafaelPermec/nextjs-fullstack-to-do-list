@@ -18,6 +18,13 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "database**/*.ts", "backend/**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts", 
+    "**/*.ts",
+    "cypress/**/*.spec.ts",
+    "database**/*.ts", 
+    "backend/**/*.ts", 
+    "**/*.tsx"
+  ],
   "exclude": ["node_modules"]
 }
