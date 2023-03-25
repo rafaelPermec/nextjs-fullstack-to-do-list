@@ -16,8 +16,6 @@ const authenticateMiddleware = async (
   res.setHeader('locals', JSON.stringify({...user, token: authorization}));
   req.cookies = (JSON.stringify({ ...req.cookies, ...user, token: authorization })) as any;
 
-  res.status(StatusCodes.OK).json({ message: 'Authenticated', auth: true });
-  
   next();
 };
 

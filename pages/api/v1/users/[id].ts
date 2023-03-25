@@ -1,10 +1,10 @@
 import nc from 'next-connect';
-import { authenticateMiddleware, ErrorMiddleware, UserTypos, NotFoundMiddleware } from '@/backend/Middlewares';
+import { authenticateMiddleware, ErrorMiddleware, UserTypos } from '@/backend/Middlewares';
 import { UserController } from '@/backend/Controllers';
 
 const userController = new UserController();
 
-const handler = nc({ onError: ErrorMiddleware, onNoMatch: NotFoundMiddleware });
+const handler = nc({ onError: ErrorMiddleware });
 
 handler
   .use(authenticateMiddleware)

@@ -44,6 +44,7 @@ export default function TodoList() {
     
     const fetchTodo = async () => {
       const { data } = await todoFetch(getUser.id);
+      console.log(data)
       const parsedData = JSON.parse(data.tasks);
       setTodoList(parsedData);
     }
@@ -127,6 +128,7 @@ export default function TodoList() {
           borderWidth='2px'
           p='4'
           borderRadius='lg'
+          w='75vw'
           alignItems='stretch'
         >
           { 
