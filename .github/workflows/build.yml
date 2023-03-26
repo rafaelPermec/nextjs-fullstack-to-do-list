@@ -42,11 +42,20 @@ jobs:
     name: Cypress Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Verificando o repositório do Github
-        uses: actions/checkout@v3
+        - name: Verificando o repositório do Github
+          uses: actions/checkout@v3
 
-      - name: instalando dependencias do Github Actions
-        uses: cypress-io/github-action@v5
-        with:
-          build: npm run build
-          start: npm start
+        - name: instalando as dependências de package.json
+          run: npm install
+
+        - name: instalando as dependências de package.json
+          run: npm run build
+          env:
+              DATABASE_URL: ${{ secrets.DATABASE_URL }}
+              TOKEN_SECRET: BestTodoList
+
+        - name: Iniciando cypress em Github Actions
+          uses: cypress-io/github-action@v5
+          with:
+            start: npm run start
+            wait-on: 'http://localhost:3000'
