@@ -30,12 +30,12 @@
   },
   "include": [
     "next-env.d.ts",
+    "**/*.spec.ts",
     "**/*.ts",
     "**/*.tsx"
   ],
   "exclude": [
     "node_modules",
-    "cypress/**/*",
     "package-lock.json",
     "sonar-project.properties",
   ]
