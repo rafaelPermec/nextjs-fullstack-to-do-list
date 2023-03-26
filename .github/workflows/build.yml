@@ -50,12 +50,12 @@ jobs:
 
         - name: Build da aplicação
           run: npm run build
-          env:
-              DATABASE_URL: ${{ secrets.DATABASE_URL }}
-              TOKEN_SECRET: BestTodoList
 
         - name: Iniciando cypress em Github Actions
-          uses: cypress-io/github-action@v5
+          uses: cypress-io/github-action@v2
           with:
             start: npm run start --verbose
             wait-on: 'http://localhost:3000'
+            env:
+                CYPRESS_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+                CYPRESS_DATABASE_URL_TOKEN_SECRET: BestTodoList

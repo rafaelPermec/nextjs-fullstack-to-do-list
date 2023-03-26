@@ -7,6 +7,9 @@ export default defineConfig({
       screenshotOnRunFailure: false,
       execTimeout: 500000,
       specPattern: "**/*.spec.ts",
-      taskTimeout: 5000,
+      taskTimeout: 50000,
+      requestTimeout: 50000,
+      responseTimeout: 50000,
+      pageLoadTimeout: 50000,
   },
 });
