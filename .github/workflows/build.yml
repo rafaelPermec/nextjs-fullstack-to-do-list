@@ -48,12 +48,14 @@ jobs:
         - name: Instalando as dependências de package.json
           run: npm install
 
-        - name: Iniciando cypress em Github Actions
-          uses: cypress-io/github-action@v5
+        - name: Build da aplicação
+          run: npm run build
           env:
               DATABASE_URL: ${{ secrets.DATABASE_URL }}
               TOKEN_SECRET: BestTodoList
+
+        - name: Iniciando cypress em Github Actions
+          uses: cypress-io/github-action@v5
           with:
             start: npm run start --verbose
-            build: npm run build
             wait-on: 'http://localhost:3000'
