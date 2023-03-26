@@ -35,6 +35,7 @@
     "**/*.tsx"
   ],
   "exclude": [
+    ".github",
     "node_modules",
     "package-lock.json",
     "sonar-project.properties",
