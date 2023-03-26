@@ -116,7 +116,7 @@ export default function TodoList() {
       <Text
           data-cy='todo-title'
           className={megrimFont.className}
-          fontSize='7xl' 
+          fontSize={['3xl', '4xl', '5xl', '6xl', '7xl']}
           noOfLines={2}
           color='teal.500'
           mb={-4}

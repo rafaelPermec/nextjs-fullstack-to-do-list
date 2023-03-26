@@ -18,6 +18,7 @@ import {
   EditIcon, 
   PlusSquareIcon,
   SmallCloseIcon,
+  ArrowUpDownIcon,
 } from '@chakra-ui/icons';
 
 export default function TopMenu() {
@@ -59,6 +60,14 @@ export default function TopMenu() {
     destroyCookie(null, 'auth')
     destroyCookie(null, 'user')
     router.push('/');
+  }
+
+  const handleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
   }
 
   return (
@@ -120,6 +129,9 @@ export default function TopMenu() {
         <MenuGroup title='Features'>
           <MenuItem data-cy='menu-change-color'icon={<MoonIcon />} onClick={toggleColorMode} >
             Alterar cores
+          </MenuItem>
+          <MenuItem data-cy='menu-fullscreen' icon={<ArrowUpDownIcon />} onClick={handleFullscreen} >
+            Tela cheia
           </MenuItem>
           <MenuItem data-cy='menu-about-me' icon={<InfoOutlineIcon />} onClick={redirectToMyPortifolio} >
             Sobre mim
