@@ -45,10 +45,10 @@ jobs:
         - name: Verificando o repositório do Github
           uses: actions/checkout@v3
 
-        - name: instalando as dependências de package.json
+        - name: Instalando as dependências de package.json
           run: npm install
 
-        - name: instalando as dependências de package.json
+        - name: Build da aplicação
           run: npm run build
           env:
               DATABASE_URL: ${{ secrets.DATABASE_URL }}
