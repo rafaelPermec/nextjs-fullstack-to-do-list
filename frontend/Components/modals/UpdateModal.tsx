@@ -32,13 +32,13 @@ export default function UpdateModal() {
 
   const handleUpdateUser = async (e: any) => {
     e.preventDefault();
-    setUser({});
 
     try {
       throw new Error();
     } catch (error: any) {
       {
         toast({
+          id: 'modal-warning-update',
           title: 'Essa funcionalidade está por vir!',
           description: 'Entre mais tarde para ver o resultado.',
           status: 'warning',
@@ -69,6 +69,7 @@ export default function UpdateModal() {
             <FormControl id="update_user">
               <FormLabel>Seu nome:</FormLabel>
               <Input 
+                data-cy='update-input-name'
                 ref={updateInitialRef}
                 placeholder='Nome'
                 name="name"
@@ -80,6 +81,7 @@ export default function UpdateModal() {
             <FormControl mt={4} id="update_user">
                 <FormLabel>E-mail:</FormLabel>
                 <Input 
+                  data-cy='update-input-email'
                   placeholder='Email' 
                   type='email'
                   name="email"
@@ -91,6 +93,7 @@ export default function UpdateModal() {
             <FormControl mt={4} id="update_user">
                 <FormLabel>Senha:</FormLabel>
                 <Input 
+                  data-cy='update-input-password'
                   placeholder='Senha' 
                   type='password'
                   name="password"
@@ -108,11 +111,18 @@ export default function UpdateModal() {
 
             <ModalFooter>
             <FormControl id="update_user">
-            <Button colorScheme='teal' mr={3} type="submit" onClick={(e) => handleUpdateUser(e)}>
+            <Button
+              data-cy='update-button'
+              colorScheme='teal' 
+              mr={3} 
+              type="submit" 
+              onClick={(e) => handleUpdateUser(e)}
+            >
               Editar Dados
             </Button>
             </FormControl>
             <Button 
+              data-cy='update-button-back'
               onClick={onClose} 
               colorScheme='teal' 
               variant='outline'

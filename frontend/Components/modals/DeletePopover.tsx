@@ -13,6 +13,7 @@ import { DeleteIcon } from '@chakra-ui/icons';
 
 interface DeletePopoverProps {
   taskId: string;
+  taskIndex: number;
 }
 
 export default function DeletePopover(props: DeletePopoverProps) {
@@ -25,6 +26,7 @@ export default function DeletePopover(props: DeletePopoverProps) {
       const deleteTodo = todoList.filter((todo: any) => todo.id !== props.taskId);
       setTodoList(deleteTodo);
       toast({
+        id: 'delete-todo-and-save',
         title: 'Tarefa deletada com sucesso!',
         description: 'Para gravar sua lista, pressione o botão "Salvar Lista".',
         status: 'success',
@@ -49,6 +51,7 @@ export default function DeletePopover(props: DeletePopoverProps) {
       <PopoverHeader>Confirme:</PopoverHeader>
       <PopoverBody>Você tem certeza que quer deletar essa tarefa?</PopoverBody>
         <Button
+          data-cy={`popover-delete-todo-button-${props.taskIndex}`}
           margin="2"
           colorScheme="red"
           leftIcon={<DeleteIcon />}

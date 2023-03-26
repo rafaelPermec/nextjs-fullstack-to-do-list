@@ -19,8 +19,8 @@ function Provider({ children }: ProviderProps) {
   // Event Hooks
   const [user, setUser] = useState({});
   const [isAuth, setIsAuth] = useState(false);
-  const [todoAdd, setTodoAdd] = useState({});
-  const [todoUpdate, setTodoUpdate] = useState({});
+  const [todoAdd, setTodoAdd] = useState({ addTask: '' });
+  const [todoUpdate, setTodoUpdate] = useState({ updateTask: '' });
   const [whichModal, setWhichModal] = useState('login' || 'signin' || 'update');
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -35,9 +35,10 @@ function Provider({ children }: ProviderProps) {
     if (passwordTest) {
       setUser((prevState: any) => ({ ...prevState, password: value }));
     } else {
-      setUser((prevState: any) => ({ ...prevState, password: '' }));
+      setUser((prevState: any) => ({ ...prevState }));
     }
   };
+
 
   // Style Hooks
   const [restrictionList, setRestrictionList] = useState({
@@ -77,6 +78,7 @@ function Provider({ children }: ProviderProps) {
     if (!value || value.length < 8) setRestrictionList((prevState: any) => ({ ...prevState, minLength: false }));
     if (!!value && value.length < 30) setRestrictionList((prevState: any) => ({ ...prevState, maxLength: true }));
     if (value.length >= 30) setRestrictionList((prevState: any) => ({ ...prevState, maxLength: false }));
+
   };
 
   const context = useMemo(() => (
@@ -112,13 +114,13 @@ function Provider({ children }: ProviderProps) {
       setUser,
       setTodoAdd,
       setTodoUpdate,
-      setRestrictionList,
       ListValidator,
       setTodoList,
     }
   ), 
     [
       // Observer
+      user,
       isLoading,
       isAuth,
       formBackground,
@@ -128,7 +130,6 @@ function Provider({ children }: ProviderProps) {
       onOpen, 
       onClose,
       whichModal,
-      user,
       todoAdd,
       todoUpdate,
       restrictionList,

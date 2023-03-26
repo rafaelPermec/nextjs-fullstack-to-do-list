@@ -39,7 +39,8 @@ export default function Page() {
         alignItems="center" 
         justifyContent="center" 
       >
-        <Flex 
+        <Flex
+          data-cy="form-container"
           direction="column" 
           background={formBackground} 
           p={12} 
@@ -54,7 +55,8 @@ export default function Page() {
           >
             ParaTo-Do's
           </Text>
-            <Button 
+          <Button 
+            data-cy="signin-button"
             colorScheme="teal" 
             variant="outline" 
             mb={22} 
@@ -62,20 +64,21 @@ export default function Page() {
             leftIcon={<BellIcon />}
             ref={loginFinalRef}
             onClick={handleSignin}
-            >
-              Cadastre-se
-            </Button>
-            <Button 
-              colorScheme="teal"
-              leftIcon={<PlusSquareIcon />}
-              ref={signinFinalRef}
-              onClick={handleLogin}
-            >
-              Login
-            </Button>
-            {
-              whichModal === 'login' ? <LoginModal /> : <SigninModal />
-            }
+          >
+            Cadastre-se
+          </Button>
+          <Button 
+            data-cy="login-button"
+            colorScheme="teal"
+            leftIcon={<PlusSquareIcon />}
+            ref={signinFinalRef}
+            onClick={handleLogin}
+          >
+            Login
+          </Button>
+          {
+            whichModal === 'login' ? <LoginModal /> : <SigninModal />
+          }
         </Flex>
         
       </Flex>

@@ -1,23 +1,42 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "es2015",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "database**/*.ts", "backend/**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "buildOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.spec.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "package-lock.json",
+    "sonar-project.properties",
+  ]
 }

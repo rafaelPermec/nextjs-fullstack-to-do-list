@@ -67,6 +67,7 @@ export default function TopMenu() {
         autoSelect={true}
       >
         <MenuButton
+          data-cy='menu-button'
           as={IconButton}
           aria-label='Options'
           icon={<HamburgerIcon />}
@@ -80,12 +81,14 @@ export default function TopMenu() {
             !isAuth ? (
               <>
               <MenuItem 
+                data-cy='menu-login'
                 icon={<PlusSquareIcon />} 
                 onClick={openLoginModal}  
               >
                 Login
               </MenuItem>
               <MenuItem 
+                data-cy='menu-signin'
                 icon={<BellIcon />} 
                 onClick={openSigninModal} 
               >
@@ -95,6 +98,7 @@ export default function TopMenu() {
             ) : (
               <>
                 <MenuItem 
+                  data-cy='menu-update'
                   icon={<EditIcon />}             
                   ref={updateFinalRef}
                   onClick={openUpdateModal} 
@@ -102,6 +106,7 @@ export default function TopMenu() {
                   Alterar perfil
                 </MenuItem>
                 <MenuItem 
+                  data-cy='menu-logout'
                   icon={<SmallCloseIcon />}
                   onClick={handleLogout} 
                 >
@@ -113,10 +118,10 @@ export default function TopMenu() {
         </MenuGroup>
         <MenuDivider  />
         <MenuGroup title='Features'>
-          <MenuItem icon={<MoonIcon />} onClick={toggleColorMode} >
+          <MenuItem data-cy='menu-change-color'icon={<MoonIcon />} onClick={toggleColorMode} >
             Alterar cores
           </MenuItem>
-          <MenuItem icon={<InfoOutlineIcon />} onClick={redirectToMyPortifolio} >
+          <MenuItem data-cy='menu-about-me' icon={<InfoOutlineIcon />} onClick={redirectToMyPortifolio} >
             Sobre mim
           </MenuItem>
         </MenuGroup>
