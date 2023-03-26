@@ -31,10 +31,12 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.spec.ts",
     "**/*.tsx"
   ],
   "exclude": [
     "node_modules",
+    "**/*.spec.ts",
+    "package-lock.json",
+    "sonar-project.properties",
   ]
 }
