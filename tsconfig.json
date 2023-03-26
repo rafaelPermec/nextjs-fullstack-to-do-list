@@ -39,7 +39,7 @@
   ],
   "exclude": [
     "node_modules",
-    "cypress",
+    "cypress/**/*.spec.ts",
     "dist",
     "build",
     "coverage",
@@ -48,6 +48,5 @@
     "next-env.d.ts",
     "tsconfig.json",
     "tsconfig.build.json",
-    ".github"
   ]
 }
