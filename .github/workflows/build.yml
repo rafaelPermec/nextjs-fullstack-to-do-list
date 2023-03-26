@@ -56,6 +56,4 @@ jobs:
           with:
             start: npm run start --verbose
             wait-on: 'http://localhost:3000'
-            env:
-                CYPRESS_DATABASE_URL: ${{ secrets.DATABASE_URL }}
-                CYPRESS_DATABASE_URL_TOKEN_SECRET: BestTodoList
+            env: DATABASE_URL=${{ secrets.DATABASE_URL }},DATABASE_URL_TOKEN_SECRET=BestTodoList
