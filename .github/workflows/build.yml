@@ -50,9 +50,9 @@ jobs:
 
         - name: Iniciando cypress em Github Actions
           uses: cypress-io/github-action@v5
-          with:
           env:
               DATABASE_URL: ${{ secrets.DATABASE_URL }}
               TOKEN_SECRET: BestTodoList
+          with:
             start: npm run start --verbose
             wait-on: 'http://localhost:3000'
