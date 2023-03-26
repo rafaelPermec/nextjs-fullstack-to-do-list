@@ -55,4 +55,5 @@ jobs:
               TOKEN_SECRET: BestTodoList
           with:
             start: npm run start --verbose
+            build: npm run build
             wait-on: 'http://localhost:3000'
