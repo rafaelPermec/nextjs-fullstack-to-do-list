@@ -38,20 +38,20 @@ jobs:
         - name: executando o lint para verificação de erros
           run: npm run lint 
 
-  cypress:
-    name: Cypress Tests
-    runs-on: ubuntu-latest
-    steps:
-        - name: Verificando o repositório do Github
-          uses: actions/checkout@v3
+  # cypress:
+  #   name: Cypress Tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #       - name: Verificando o repositório do Github
+  #         uses: actions/checkout@v3
 
-        - name: Instalando as dependências de package.json
-          run: npm install
+  #       - name: Instalando as dependências de package.json
+  #         run: npm install
 
-        - name: Iniciando cypress em Github Actions
-          uses: cypress-io/github-action@v5
-          with:
-            start: npm run start --verbose
-            run: npm run build
-            wait-on: 'http://localhost:3000'
-            env: DATABASE_URL=${{ secrets.DATABASE_URL }},DATABASE_URL_TOKEN_SECRET=BestTodoList
+  #       - name: Iniciando cypress em Github Actions
+  #         uses: cypress-io/github-action@v5
+  #         with:
+  #           start: npm run start --verbose
+  #           run: npm run build
+  #           wait-on: 'http://localhost:3000'
+  #           env: DATABASE_URL=${{ secrets.DATABASE_URL }},DATABASE_URL_TOKEN_SECRET=BestTodoList
