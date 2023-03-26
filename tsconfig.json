@@ -26,27 +26,15 @@
   },
   "buildOptions": {
     "baseUrl": ".",
-    "outDir": "dist",
-    "sourceMap": true,
-    "incremental": true
+    "outDir": "./dist",
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "database**/*.ts",
-    "backend/**/*.ts",
+    "**/*.spec.ts",
     "**/*.tsx"
   ],
   "exclude": [
     "node_modules",
-    "cypress/**/*.spec.ts",
-    "dist",
-    "build",
-    "coverage",
-    "public",
-    "next.config.js",
-    "next-env.d.ts",
-    "tsconfig.json",
-    "tsconfig.build.json",
   ]
 }
