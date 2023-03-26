@@ -1,4 +1,4 @@
-<h1 align="center">Boas vindas ao repositório do projeto de ParaTo-Do's!</h1>
+<h1 align="center">Boas vindas ao repositório de ParaTo-Do's!</h1>
 <h3 align="center">Visite o projeto em seu estado atual em: https://paratodos.vercel.app/</h3>
 </br>
 
